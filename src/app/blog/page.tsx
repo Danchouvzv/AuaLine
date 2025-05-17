@@ -60,7 +60,7 @@ const BLOG_POSTS = [
     id: 5,
     slug: 'future-of-sustainable-art-supplies',
     title: 'The Future of Sustainable Art Supplies',
-    excerpt: 'Exploring innovations in eco-friendly art materials and how they're changing the creative industry.',
+    excerpt: 'Exploring innovations in eco-friendly art materials and how they\'re changing the creative industry.',
     image: '/images/blog/future-sustainable.jpg',
     category: 'Trends',
     date: 'May 28, 2023',
