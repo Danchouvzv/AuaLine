@@ -415,7 +415,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
     <tr>
       <td align="center">
         <a href="https://github.com/Danchouvzv">
-          <b>Danial</b>
+          <b>Daniyal</b>
           <br />
           <sub>Lead Developer</sub>
         </a>
