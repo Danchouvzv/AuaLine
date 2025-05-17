@@ -74,21 +74,6 @@ const MegaMenu = () => {
       path: "/impact",
       submenu: null,
     },
-    {
-      name: "Account",
-      path: "/account",
-      submenu: [
-        {
-          title: "User",
-          items: [
-            { name: "Log In", path: "/auth/login" },
-            { name: "Sign Up", path: "/auth/signup" },
-            { name: "My Profile", path: "/account" },
-            { name: "Order History", path: "/account/orders" },
-          ],
-        },
-      ],
-    },
   ];
 
   return (

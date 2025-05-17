@@ -44,13 +44,21 @@ export default function NavAuth() {
 
   if (!user) {
     return (
-      <Link 
-        href="/auth/signin" 
-        className="flex items-center px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
-      >
-        <User className="h-5 w-5 mr-2" />
-        Sign In
-      </Link>
+      <div className="flex items-center space-x-2">
+        <Link 
+          href="/auth/login" 
+          className="flex items-center px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+        >
+          <User className="h-5 w-5 mr-2" />
+          Login
+        </Link>
+        <Link 
+          href="/auth/signup" 
+          className="flex items-center px-3 py-2 text-sm font-medium bg-eco-leaf text-white rounded-md hover:bg-eco-leaf/90 transition"
+        >
+          Register
+        </Link>
+      </div>
     );
   }
 

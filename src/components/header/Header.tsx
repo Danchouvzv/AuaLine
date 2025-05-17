@@ -146,10 +146,16 @@ const Header = () => {
                 Impact
               </Link>
               <Link
-                href="/account"
+                href="/auth/login"
                 className="py-2 text-lg font-medium border-b border-gray-200 dark:border-gray-800"
               >
-                Account
+                Login
+              </Link>
+              <Link
+                href="/auth/signup"
+                className="py-2 text-lg font-medium"
+              >
+                Register
               </Link>
             </nav>
           </div>
