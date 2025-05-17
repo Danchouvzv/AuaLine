@@ -29,6 +29,26 @@ const ImpactPage = () => {
   const [pollutionSaved, setPollutionSaved] = useState(0);
   const [treesEquivalent, setTreesEquivalent] = useState(0);
   const [waterSaved, setWaterSaved] = useState(0);
+  const [calculatorInputs, setCalculatorInputs] = useState({
+    quantity: 1,
+    productType: "ink",
+    duration: 6,
+    region: "asia"
+  });
+  const [showResults, setShowResults] = useState(false);
+  const [impactData, setImpactData] = useState({
+    pollutionCaptured: 0,
+    airPurified: 0,
+    co2Equivalent: 0,
+    waterSaved: 0,
+    pollutionRank: 0,
+    airRank: 0,
+    communityPercentile: 0,
+    co2Percentage: 0,
+    waterPercentage: 0,
+    tradInkAvoided: 0,
+    treesPlanted: 0
+  });
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -68,6 +88,78 @@ const ImpactPage = () => {
   }, []);
 
   const parallaxOffset = scrollY * 0.4;
+
+  const calculateImpact = () => {
+    // Base values for different product types (pollution captured in kg per unit)
+    const productImpacts = {
+      "ink": 1.2,       // Base impact for ink bottles
+      "markers": 0.85,  // Base impact for markers
+      "pens": 0.6,      // Base impact for pens
+      "art-sets": 3.2   // Base impact for art sets
+    };
+
+    // Regional multipliers (some regions have higher pollution density)
+    const regionMultipliers = {
+      "asia": 1.25,       // Higher pollution density in Asia Pacific
+      "europe": 0.95,     // Moderate pollution in Europe
+      "namerica": 1.05,   // Moderate pollution in North America
+      "gsouth": 1.15      // Higher pollution in Global South
+    };
+
+    // Calculate base pollution captured
+    const baseImpact = productImpacts[calculatorInputs.productType] || 1.0;
+    const regionMultiplier = regionMultipliers[calculatorInputs.region] || 1.0;
+    
+    // Calculate impact scaled by quantity, duration, and region
+    const pollutionCaptured = baseImpact * calculatorInputs.quantity * 
+                             (Math.sqrt(calculatorInputs.duration) / 2) * 
+                             regionMultiplier;
+    
+    // Derive other metrics from the pollution captured
+    const airPurified = pollutionCaptured * 3.5;           // Each kg of pollution = 3.5 m³ air
+    const co2Equivalent = pollutionCaptured * 0.5;         // CO2 equivalent is about half the pollution weight
+    const waterSaved = pollutionCaptured * 1200;          // Water saved compared to traditional ink (L)
+    const treesPlanted = pollutionCaptured * 0.08;        // Tree equivalent (yearly CO2 absorption)
+    
+    // Calculate ratings and percentiles
+    const pollutionRank = Math.min(25, Math.round(pollutionCaptured * 2)); 
+    const airRank = Math.min(30, Math.round(airPurified * 0.8));
+    
+    // Community percentile is higher for larger purchases and longer usage
+    let communityPercentile = 50 - Math.round(calculatorInputs.quantity * 3 + calculatorInputs.duration * 0.5);
+    communityPercentile = Math.max(5, Math.min(30, communityPercentile)); // Cap between 5-30%
+    
+    // Calculate percentages for progress bars
+    const co2Percentage = Math.min(100, Math.round(co2Equivalent * 15));
+    const waterPercentage = Math.min(100, Math.round(waterSaved / 1000));
+    const tradInkAvoided = Math.min(100, 70 + Math.round(pollutionCaptured * 5));
+    
+    setImpactData({
+      pollutionCaptured,
+      airPurified,
+      co2Equivalent,
+      waterSaved,
+      pollutionRank,
+      airRank,
+      communityPercentile,
+      co2Percentage,
+      waterPercentage,
+      tradInkAvoided,
+      treesPlanted
+    });
+    
+    setShowResults(true);
+  };
+
+  const resetCalculator = () => {
+    setCalculatorInputs({
+      quantity: 1,
+      productType: "ink",
+      duration: 6,
+      region: "asia"
+    });
+    setShowResults(false);
+  };
 
   return (
     <div className="relative overflow-x-hidden">
@@ -336,11 +428,20 @@ const ImpactPage = () => {
                             placeholder="Enter number of products"
                             min="1"
                             defaultValue="1"
+                            onChange={(e) => {
+                              const val = parseInt(e.target.value);
+                              if (val > 0 && val <= 100) {
+                                setCalculatorInputs(prev => ({ ...prev, quantity: val }));
+                              }
+                            }}
                           />
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Product Type</label>
-                          <select className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700">
+                          <select 
+                            className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
+                            onChange={(e) => setCalculatorInputs(prev => ({ ...prev, productType: e.target.value }))}
+                          >
                             <option value="ink">Ink Bottles</option>
                             <option value="markers">Markers</option>
                             <option value="pens">Pens</option>
@@ -355,7 +456,8 @@ const ImpactPage = () => {
                           min="1"
                           max="24"
                           defaultValue="6"
-                          className="w-full"
+                          className="w-full accent-eco-leaf"
+                          onChange={(e) => setCalculatorInputs(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
                         />
                         <div className="flex justify-between text-xs text-slate-500">
                           <span>1</span>
@@ -365,34 +467,183 @@ const ImpactPage = () => {
                           <span>24</span>
                         </div>
                       </div>
+                      <div className="space-y-2">
+                        <label className="text-sm font-medium">Your Region</label>
+                        <select 
+                          className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
+                          onChange={(e) => setCalculatorInputs(prev => ({ ...prev, region: e.target.value }))}
+                        >
+                          <option value="asia">Asia Pacific</option>
+                          <option value="europe">Europe</option>
+                          <option value="namerica">North America</option>
+                          <option value="gsouth">Global South</option>
+                        </select>
+                      </div>
                     </form>
                   </CardContent>
                   <CardFooter className="flex justify-between">
-                    <Button variant="outline">Reset</Button>
-                    <Button>Calculate Impact</Button>
+                    <Button variant="outline" onClick={() => resetCalculator()}>Reset</Button>
+                    <Button onClick={() => calculateImpact()}>Calculate Impact</Button>
                   </CardFooter>
                 </Card>
                 
-                <div className="mt-8 p-6 border border-dashed rounded-lg border-slate-300 dark:border-slate-700">
-                  <h3 className="text-xl font-bold mb-4 text-center">Your Environmental Impact</h3>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    <div className="text-center">
-                      <BarChart3 className="h-8 w-8 mx-auto mb-2 text-emerald-600 dark:text-emerald-400" />
-                      <p className="text-2xl font-bold">3.5 kg</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                {showResults && (
+                  <motion.div 
+                    className="mt-8 p-6 border rounded-lg bg-white dark:bg-slate-800 shadow-lg"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <h3 className="text-xl font-bold mb-6 text-center">Your Environmental Impact</h3>
+                    
+                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.2 }}
+                      >
+                        <div className="relative h-20 w-20 mx-auto mb-3">
+                          <BarChart3 className="h-12 w-12 mx-auto text-eco-leaf" />
+                          <motion.div 
+                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.6, type: "spring" }}
+                          >
+                            +{impactData.pollutionRank}
+                          </motion.div>
+                        </div>
+                        <motion.p 
+                          className="text-3xl font-bold"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.3 }}
+                        >
+                          {impactData.pollutionCaptured.toFixed(1)} kg
+                        </motion.p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                      </motion.div>
+                      
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                      >
+                        <div className="relative h-20 w-20 mx-auto mb-3">
+                          <TrendingUp className="h-12 w-12 mx-auto text-eco-leaf" />
+                          <motion.div 
+                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.7, type: "spring" }}
+                          >
+                            +{impactData.airRank}
+                          </motion.div>
+                        </div>
+                        <motion.p 
+                          className="text-3xl font-bold"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.4 }}
+                        >
+                          {impactData.airPurified.toFixed(1)} m³
+                        </motion.p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Air purified</p>
+                      </motion.div>
+                      
+                      <motion.div 
+                        className="text-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                      >
+                        <div className="relative h-20 w-20 mx-auto mb-3">
+                          <Users className="h-12 w-12 mx-auto text-eco-leaf" />
+                          <motion.div 
+                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            transition={{ delay: 0.8, type: "spring" }}
+                          >
+                            🌟
+                          </motion.div>
+                        </div>
+                        <motion.p 
+                          className="text-3xl font-bold"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.5 }}
+                        >
+                          Top {impactData.communityPercentile}%
+                        </motion.p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Of community contributors</p>
+                      </motion.div>
                     </div>
-                    <div className="text-center">
-                      <TrendingUp className="h-8 w-8 mx-auto mb-2 text-emerald-600 dark:text-emerald-400" />
-                      <p className="text-2xl font-bold">12.4 m³</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Air purified</p>
+                    
+                    <motion.div 
+                      className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.6 }}
+                    >
+                      <h4 className="font-medium mb-4">Impact Breakdown</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">CO₂ Equivalent Saved</span>
+                            <span className="text-sm font-medium">{impactData.co2Equivalent.toFixed(2)} kg</span>
+                          </div>
+                          <Progress value={impactData.co2Percentage} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">Water Conservation</span>
+                            <span className="text-sm font-medium">{impactData.waterSaved.toFixed(0)} L</span>
+                          </div>
+                          <Progress value={impactData.waterPercentage} className="h-2" />
+                        </div>
+                        <div>
+                          <div className="flex justify-between mb-1">
+                            <span className="text-sm">Traditional Ink Manufacturing Avoided</span>
+                            <span className="text-sm font-medium">{impactData.tradInkAvoided.toFixed(0)}%</span>
+                          </div>
+                          <Progress value={impactData.tradInkAvoided} className="h-2" />
+                        </div>
+                      </div>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border border-emerald-100 dark:border-emerald-800"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.8 }}
+                    >
+                      <div className="flex">
+                        <div className="mr-4 flex-shrink-0">
+                          <Leaf className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-emerald-800 dark:text-emerald-200">
+                            By using AuaLine products, you've helped remove air pollution equivalent to
+                            planting <span className="font-bold">{impactData.treesPlanted.toFixed(1)} trees</span> for a year!
+                            Thank you for being part of our mission for cleaner air.
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                    
+                    <div className="mt-6 flex justify-center">
+                      <Button variant="outline" size="sm" className="mr-2" onClick={() => resetCalculator()}>
+                        Recalculate
+                      </Button>
+                      <Button size="sm" onClick={() => window.print()}>
+                        Share Results
+                      </Button>
                     </div>
-                    <div className="text-center">
-                      <Users className="h-8 w-8 mx-auto mb-2 text-emerald-600 dark:text-emerald-400" />
-                      <p className="text-2xl font-bold">Top 15%</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Of community contributors</p>
-                    </div>
-                  </div>
-                </div>
+                  </motion.div>
+                )}
               </TabsContent>
             </Tabs>
           </motion.div>
