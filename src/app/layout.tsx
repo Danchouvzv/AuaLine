@@ -1,7 +1,8 @@
 import './globals.css';
-import type { Metadata } from 'next';
 import { Inter, Montserrat } from 'next/font/google';
 import RootLayoutClient from '@/components/layout/RootLayoutClient';
+import { AuthProvider } from '@/lib/hooks/useAuth';
+import type { Metadata } from 'next';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -16,11 +17,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: {
-    default: 'AuaLine - Air-to-Ink Marketplace',
-    template: '%s | AuaLine',
-  },
-  description: 'Innovative eco-friendly marketplace transforming air pollution into sustainable ink products',
+  title: 'AuaLine - Turn Pollution into Art',
+  description: 'AuaLine transforms air pollution into sustainable art supplies. Our innovative technology captures carbon pollution and converts it into high-quality inks and pigments for creative expression.',
   keywords: ['eco-friendly', 'air purification', 'sustainable ink', 'air to ink', 'ecological products'],
   creator: 'AuaLine Team',
   openGraph: {
@@ -63,9 +61,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}>
-        <RootLayoutClient>
-          {children}
-        </RootLayoutClient>
+        <AuthProvider>
+          <RootLayoutClient>
+            {children}
+          </RootLayoutClient>
+        </AuthProvider>
       </body>
     </html>
   )
