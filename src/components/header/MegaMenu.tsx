@@ -66,7 +66,7 @@ const MegaMenu = () => {
     },
     {
       name: "About",
-      path: "/marketing/about",
+      path: "/about",
       submenu: null,
     },
     {

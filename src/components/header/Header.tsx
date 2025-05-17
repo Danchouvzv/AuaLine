@@ -134,7 +134,7 @@ const Header = () => {
                 Blog
               </Link>
               <Link
-                href="/marketing/about"
+                href="/about"
                 className="py-2 text-lg font-medium border-b border-gray-200 dark:border-gray-800"
               >
                 About
