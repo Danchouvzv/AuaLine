@@ -20,7 +20,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [inkDrops, setInkDrops] = useState<{left: number, size: number, delay: number}[]>([]);
   
-  // Generate random ink drops for animation
+  
   useEffect(() => {
     const drops = Array(15).fill(0).map(() => ({
       left: Math.random() * 100,
