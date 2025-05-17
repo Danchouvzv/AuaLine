@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Filter, Search, X, ChevronDown, Sliders, Sun, Clock, Droplet, Grid3X3, SlidersHorizontal, Layout, ShoppingBag, Package, Monitor } from 'lucide-react';
+import { Filter, Search, X, ChevronDown, Sliders, Sun, Clock, Droplet, Grid3X3, SlidersHorizontal, Layout, ShoppingBag, Package as PackageIcon, Monitor } from 'lucide-react';
 import ProductCard from '@/components/shop/ProductCard';
 
 // Mock data - in a real app would come from Firestore/API
@@ -171,7 +171,7 @@ const categories = [
   { id: "inks", name: "Eco Inks", icon: Droplet },
   { id: "accessories", name: "Accessories", icon: ShoppingBag },
   { id: "paper", name: "Paper & Canvas", icon: Layout },
-  { id: "bundles", name: "Bundles", icon: Package },
+  { id: "bundles", name: "Bundles", icon: PackageIcon },
   { id: "digital", name: "Digital Products", icon: Monitor }
 ];
 

@@ -29,9 +29,13 @@ export default function NavAuth() {
   }, []);
 
   const handleSignOut = async () => {
-    await signOut();
-    setIsOpen(false);
-    router.push("/");
+    try {
+      await signOut();
+      setIsOpen(false);
+      router.push("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   if (loading) {

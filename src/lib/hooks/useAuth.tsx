@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 // Define the User type
 export interface User {
@@ -10,6 +10,18 @@ export interface User {
   photoURL: string | null;
 }
 
+// Define the Auth context type
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<User>;
+  signUp: (email: string, password: string, displayName: string) => Promise<User>;
+  signOut: () => Promise<void>;
+}
+
+// Create Auth context
+const AuthContext = createContext<AuthContextType | null>(null);
+
 // Mock user data for demo purposes
 const MOCK_USER: User = {
   uid: 'user123',
@@ -18,8 +30,8 @@ const MOCK_USER: User = {
   photoURL: null
 };
 
-// Custom hook to use auth
-export function useAuth() {
+// Auth provider component
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -90,11 +102,18 @@ export function useAuth() {
     }
   };
 
-  return {
-    user,
-    loading,
-    signIn,
-    signUp,
-    signOut
-  };
+  return (
+    <AuthContext.Provider value={{ user, loading, signIn, signUp, signOut }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+// Custom hook to use auth
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 } 
