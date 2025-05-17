@@ -14,6 +14,13 @@ export default function NavAuth() {
   const router = useRouter();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  // For debugging
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log("Current auth state:", user ? "Logged in" : "Not logged in");
+    }
+  }, [user]);
+
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -27,6 +34,20 @@ export default function NavAuth() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  // Mock login for demo purposes
+  const handleMockLogin = () => {
+    // Store a mock user in localStorage
+    const mockUser = {
+      uid: 'user123',
+      email: 'user@example.com',
+      displayName: 'Demo User',
+      photoURL: null
+    };
+    localStorage.setItem('auth_user', JSON.stringify(mockUser));
+    // Reload the page to refresh auth state
+    window.location.reload();
+  };
 
   const handleSignOut = async () => {
     try {
@@ -49,15 +70,15 @@ export default function NavAuth() {
   if (!user) {
     return (
       <div className="flex items-center space-x-2">
-        <Link 
-          href="/auth/login" 
+        <button 
+          onClick={handleMockLogin} 
           className="flex items-center px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
         >
           <User className="h-5 w-5 mr-2" />
-          Login
-        </Link>
+          Login (Demo)
+        </button>
         <Link 
-          href="/auth/signup" 
+          href="/account" 
           className="flex items-center px-3 py-2 text-sm font-medium bg-eco-leaf text-white rounded-md hover:bg-eco-leaf/90 transition"
         >
           Register

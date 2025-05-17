@@ -1,6 +1,7 @@
 import './globals.css';
 import { Inter, Montserrat } from 'next/font/google';
 import RootLayoutClient from '@/components/layout/RootLayoutClient';
+import { AuthProvider } from '@/lib/hooks/useAuth.tsx';
 import type { Metadata } from 'next';
 
 const inter = Inter({
@@ -60,9 +61,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${montserrat.variable} font-sans antialiased`}>
-        <RootLayoutClient>
-          {children}
-        </RootLayoutClient>
+        <AuthProvider>
+          <RootLayoutClient>
+            {children}
+          </RootLayoutClient>
+        </AuthProvider>
       </body>
     </html>
   )
