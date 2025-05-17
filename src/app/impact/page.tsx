@@ -251,21 +251,21 @@ const ImpactPage = () => {
                 <div className="grid md:grid-cols-3 gap-6 mt-8">
                   <div className="flex flex-col items-center">
                     <h4 className="font-medium text-center mb-4">Total CO₂ Reduced</h4>
-                    <RadialProgress value={68} size={120} strokeWidth={10} />
+                    <RadialProgress percentage={68} />
                     <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
                       68% of our 2024 target achieved
                     </p>
                   </div>
                   <div className="flex flex-col items-center">
                     <h4 className="font-medium text-center mb-4">Community Growth</h4>
-                    <RadialProgress value={82} size={120} strokeWidth={10} />
+                    <RadialProgress percentage={82} />
                     <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
                       82% increase in active community members
                     </p>
                   </div>
                   <div className="flex flex-col items-center">
                     <h4 className="font-medium text-center mb-4">Water Conservation</h4>
-                    <RadialProgress value={91} size={120} strokeWidth={10} />
+                    <RadialProgress percentage={91} />
                     <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
                       91% reduction in water usage vs. traditional methods
                     </p>
