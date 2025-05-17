@@ -1,7 +1,7 @@
 # 🌍 AuaLine | Transforming Air Pollution into Art
 
 <div align="center">
-  <img src="https://i.imgur.com/5ZLUrCn.png" alt="AuaLine Logo" width="400"/>
+  <!-- Logo would go here when available -->
   
   <p><em>From pollution to creation: Sustainable ink products for a cleaner future</em></p>
 
@@ -89,9 +89,7 @@ This process not only cleans the air but gives pollution a second life as a crea
 
 Experience the AuaLine marketplace: [aualine.com](https://aualine.com) (coming soon)
 
-<div align="center">
-  <img src="https://i.imgur.com/QfYYsL1.png" alt="AuaLine Application Screenshot" width="800"/>
-</div>
+<!-- Demo screenshot would go here when available -->
 
 ---
 
@@ -314,9 +312,7 @@ Key responsive features include:
 - Optimized images for different screen sizes
 - Touch-friendly interaction patterns
 
-<div align="center">
-  <img src="https://i.imgur.com/6ZRMc9q.png" alt="Responsive Design Showcase" width="800"/>
-</div>
+<!-- Responsive design showcase would go here when available -->
 
 ---
 
@@ -419,12 +415,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
     <tr>
       <td align="center">
         <a href="https://github.com/Danchouvzv">
-          <img src="https://github.com/Danchouvzv.png" width="100px;" alt="Danial" style="border-radius:50%"/>
+          <b>Danial</b>
           <br />
-          <sub><b>Danial</b></sub>
+          <sub>Lead Developer</sub>
         </a>
-        <br />
-        <sub>Lead Developer</sub>
       </td>
       <!-- Add more team members here -->
     </tr>
@@ -453,7 +447,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-  <img src="https://i.imgur.com/Zhvz1dA.png" alt="AuaLine Environmental Impact" width="400"/>
   <p><strong>Every product purchased with AuaLine helps purify 1m³ of air.</strong></p>
   <br/>
   <p>Made with 🖤 and clean air by the AuaLine Team</p>
