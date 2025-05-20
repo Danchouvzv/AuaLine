@@ -12,7 +12,7 @@ const products = [
     name: "Eco-Leaf Green",
     description: "A rich, vibrant green made from filtered carbon particles",
     price: 24.99,
-    image: "/images/products/eco-leaf.png", // Placeholder
+    image: "https://sdmntprukwest.oaiusercontent.com/files/00000000-c4b8-6243-94b9-b9a94edfb78c/raw?se=2025-05-20T18%3A13%3A44Z&sp=r&sv=2024-08-04&sr=b&scid=1fd8a9f5-078d-5c22-be6b-efecbc7e1e95&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-19T23%3A56%3A20Z&ske=2025-05-20T23%3A56%3A20Z&sks=b&skv=2024-08-04&sig=B7cDP9NxciXOozDW5KX6e0thDdATfSRHui%2BvLjYT6TE%3D",
     rating: 4.8,
     reviews: 124,
     isNew: true,
@@ -25,7 +25,7 @@ const products = [
     name: "Sky Blue",
     description: "A calming blue inspired by clear skies after air filtration",
     price: 24.99,
-    image: "/images/products/sky-blue.png", // Placeholder
+    image: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-4c40-61f4-8e8b-c6364808505c/raw?se=2025-05-20T18%3A19%3A24Z&sp=r&sv=2024-08-04&sr=b&scid=fbd87f5c-e7cf-5262-b386-95386822d8a2&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-20T04%3A54%3A28Z&ske=2025-05-21T04%3A54%3A28Z&sks=b&skv=2024-08-04&sig=Eah%2Bm3lQsCwQBPle8kx%2BggWf/7Yw6A2GJDKJFvb1Wfk%3D",
     rating: 4.9,
     reviews: 89,
     isNew: false,
@@ -38,7 +38,7 @@ const products = [
     name: "Coral Red",
     description: "A vibrant red with high pigment density for artists",
     price: 26.99,
-    image: "/images/products/coral-red.png", // Placeholder
+    image: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-e300-61f4-a9a9-46df387ff605/raw?se=2025-05-20T18%3A56%3A43Z&sp=r&sv=2024-08-04&sr=b&scid=ec33f4d8-0e9e-5736-9808-c94c4213bd7e&skoid=82a3371f-2f6c-4f81-8a78-2701b362559b&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-20T18%3A38%3A22Z&ske=2025-05-21T18%3A38%3A22Z&sks=b&skv=2024-08-04&sig=%2Bg9%2Bk4CPgfwxmEKIRrQ4pak5E0HrezKl6h3b53F9jAc%3D",
     rating: 4.7,
     reviews: 76,
     isNew: false,
@@ -51,7 +51,7 @@ const products = [
     name: "Carbon Black",
     description: "Our classic black, made directly from carbon emissions",
     price: 22.99,
-    image: "/images/products/carbon-black.png", // Placeholder
+    image: "https://sdmntpritalynorth.oaiusercontent.com/files/00000000-1f08-6246-9f6d-cf3c5c9156ff/raw?se=2025-05-20T17%3A30%3A55Z&sp=r&sv=2024-08-04&sr=b&scid=8ab461f2-30c4-5290-abf7-3e16be55b4b8&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-20T08%3A26%3A16Z&ske=2025-05-21T08%3A26%3A16Z&sks=b&skv=2024-08-04&sig=3g72DRlIeb9iz6hnK%2BLPFCBqLBBupXnw0ygZKI1E24k%3D",
     rating: 4.9,
     reviews: 213,
     isNew: false,
@@ -60,89 +60,11 @@ const products = [
     color: "bg-carbon-black",
   },
   {
-    id: "solar-yellow",
-    name: "Solar Yellow",
-    description: "Bright yellow that brings sunshine to your artworks",
-    price: 24.99,
-    image: "/images/products/solar-yellow.png", // Placeholder
-    rating: 4.6,
-    reviews: 57,
-    isNew: true,
-    isBestSeller: false,
-    category: "inks",
-    color: "bg-solar-yellow",
-  },
-  {
-    id: "brush-set",
-    name: "Eco Brush Set",
-    description: "Set of 5 sustainable bamboo brushes for eco-friendly painting",
-    price: 34.99,
-    image: "/images/products/brush-set.png", // Placeholder
-    rating: 4.8,
-    reviews: 42,
-    isNew: true,
-    isBestSeller: false,
-    category: "accessories",
-    color: "bg-gray-200",
-  },
-  {
-    id: "recycled-sketchbook",
-    name: "Recycled Sketchbook",
-    description: "Premium sketchbook made from 100% recycled materials",
-    price: 18.99,
-    image: "/images/products/sketchbook.png", // Placeholder
-    rating: 4.7,
-    reviews: 89,
-    isNew: false,
-    isBestSeller: true,
-    category: "paper",
-    color: "bg-soft-lilac/50",
-  },
-  {
-    id: "artist-bundle",
-    name: "Artist Starter Bundle",
-    description: "Complete set with our eco inks, brushes and recycled paper",
-    price: 79.99,
-    image: "/images/products/bundle.png", // Placeholder
-    rating: 4.9,
-    reviews: 37,
-    isNew: true,
-    isBestSeller: true,
-    category: "bundles",
-    color: "bg-eco-leaf/30",
-  },
-  {
-    id: "canvas-tote",
-    name: "Artist Canvas Tote",
-    description: "Sustainable cotton tote bag for carrying your art supplies",
-    price: 29.99,
-    image: "/images/products/tote.png", // Placeholder
-    rating: 4.8,
-    reviews: 64,
-    isNew: false,
-    isBestSeller: false,
-    category: "accessories",
-    color: "bg-gray-100",
-  },
-  {
-    id: "bamboo-pen",
-    name: "Bamboo Drawing Pen",
-    description: "Precision drawing pen with eco-ink cartridge and bamboo body",
-    price: 15.99,
-    image: "/images/products/pen.png", // Placeholder
-    rating: 4.6,
-    reviews: 112,
-    isNew: false,
-    isBestSeller: true,
-    category: "accessories",
-    color: "bg-eco-leaf/20",
-  },
-  {
     id: "ocean-blue",
     name: "Ocean Blue",
     description: "Deep blue ink inspired by our mission to clean the oceans",
     price: 24.99,
-    image: "/images/products/ocean-blue.png", // Placeholder
+    image: "https://sdmntprnortheu.oaiusercontent.com/files/00000000-b0c4-61f4-bb00-18e47ae35ae8/raw?se=2025-05-20T17%3A37%3A06Z&sp=r&sv=2024-08-04&sr=b&scid=31e5c77a-fa56-52c2-9815-f67316ab1da6&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-20T04%3A50%3A23Z&ske=2025-05-21T04%3A50%3A23Z&sks=b&skv=2024-08-04&sig=mFJjaImirXnFFFA6Zz7kM7hrbz6U3iyz2h162V9kj8Y%3D",
     rating: 4.7,
     reviews: 48,
     isNew: true,
@@ -151,17 +73,17 @@ const products = [
     color: "bg-sky-blue/80",
   },
   {
-    id: "digital-brushes",
-    name: "Digital Eco Brushes",
-    description: "Digital brush pack for Procreate inspired by our physical products",
-    price: 12.99,
-    image: "/images/products/digital.png", // Placeholder
+    id: "eco-pen",
+    name: "Premium Eco Pen",
+    description: "Ergonomic design with sustainable materials and smooth writing",
+    price: 35.99,
+    image: "https://sdmntpritalynorth.oaiusercontent.com/files/00000000-22a0-6246-9307-57162e79d559/raw?se=2025-05-20T17%3A42%3A46Z&sp=r&sv=2024-08-04&sr=b&scid=e1067729-5aca-53c1-b7d6-3360d57cd250&skoid=b32d65cd-c8f1-46fb-90df-c208671889d4&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-20T08%3A26%3A27Z&ske=2025-05-21T08%3A26%3A27Z&sks=b&skv=2024-08-04&sig=v3U16IkUi18R3FGuZW7PE89aP/pfC8FTAsvroLivd4A%3D",
     rating: 4.9,
-    reviews: 27,
+    reviews: 76,
     isNew: true,
-    isBestSeller: false,
-    category: "digital",
-    color: "bg-solar-yellow/30",
+    isBestSeller: true,
+    category: "accessories",
+    color: "bg-eco-leaf/20",
   }
 ];
 
@@ -169,10 +91,7 @@ const products = [
 const categories = [
   { id: "all", name: "All Products", icon: Grid3X3 },
   { id: "inks", name: "Eco Inks", icon: Droplet },
-  { id: "accessories", name: "Accessories", icon: ShoppingBag },
-  { id: "paper", name: "Paper & Canvas", icon: Layout },
-  { id: "bundles", name: "Bundles", icon: PackageIcon },
-  { id: "digital", name: "Digital Products", icon: Monitor }
+  { id: "accessories", name: "Accessories", icon: ShoppingBag }
 ];
 
 // Sorting options

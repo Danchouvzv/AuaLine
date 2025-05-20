@@ -27,6 +27,7 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [imageError, setImageError] = useState(false);
   
   // Placeholder function for adding to cart
   const addToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -62,19 +63,22 @@ const ProductCard = ({ product }: ProductCardProps) => {
       >
         {/* Product Image */}
         <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-ink-blue/40">
-          {/* Placeholder for the actual image */}
-          <div className={`w-full h-full flex items-center justify-center ${product.color}`}>
-            <span className="text-6xl text-white/90">Aa</span>
-          </div>
-          
-          {/* In a real implementation, we would use next/image */}
-          {/* <Image
-            src={product.image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-cover transform transition-transform duration-300 group-hover:scale-105"
-          /> */}
+          {imageError ? (
+            // Fallback if image fails to load
+            <div className={`w-full h-full flex items-center justify-center ${product.color}`}>
+              <span className="text-6xl text-white/90">Aa</span>
+            </div>
+          ) : (
+            // Actual product image
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              className="object-cover transform transition-transform duration-300 group-hover:scale-105"
+              onError={() => setImageError(true)}
+            />
+          )}
           
           {/* Badges */}
           <div className="absolute top-2 left-2 flex flex-col gap-2">
