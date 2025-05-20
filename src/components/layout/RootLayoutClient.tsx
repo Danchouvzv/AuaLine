@@ -6,6 +6,7 @@ import { QueryProvider } from '@/components/query-provider';
 import Header from '@/components/header/Header';
 import Footer from '@/components/layout/Footer';
 import dynamic from 'next/dynamic';
+import { AuthProvider } from '@/lib/hooks/useAuth';
 
 // Dynamically import CartProvider with SSR disabled
 const CartProvider = dynamic(
@@ -26,11 +27,13 @@ export default function RootLayoutClient({ children }: RootLayoutClientProps) {
       disableTransitionOnChange
     >
       <QueryProvider>
-        <CartProvider>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <main>{children}</main>
+            <Footer />
+          </CartProvider>
+        </AuthProvider>
       </QueryProvider>
     </ThemeProvider>
   );

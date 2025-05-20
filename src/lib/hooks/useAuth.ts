@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 
 // Define the User type
 export interface User {
@@ -10,22 +10,31 @@ export interface User {
   photoURL: string | null;
 }
 
-// Mock user data for demo purposes
-const MOCK_USER: User = {
-  uid: 'user123',
-  email: 'user@example.com',
-  displayName: 'Demo User',
-  photoURL: null
-};
+// Define the auth context type
+export interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  error: string | null;
+  signIn: (email: string, password: string) => Promise<User>;
+  signUp: (email: string, password: string, displayName: string) => Promise<User>;
+  signOut: () => Promise<void>;
+}
 
-// Custom hook to use auth
-export function useAuth() {
+// Create the auth context
+export const AuthContext = createContext<AuthContextType | null>(null);
+
+// Auth provider component
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Check if user is logged in
   useEffect(() => {
-    // In a real app, this would check with Firebase or another auth provider
     const checkAuth = async () => {
       try {
         // Only run on client side
@@ -47,16 +56,37 @@ export function useAuth() {
 
   // Sign in function
   const signIn = async (email: string, password: string): Promise<User> => {
-    // This would validate with real backend in production
     setLoading(true);
+    setError(null);
     
     try {
-      // Mock successful login
-      // In real app, would authenticate against Firebase, Auth0, etc.
-      const user = { ...MOCK_USER, email };
-      setUser(user);
-      localStorage.setItem('auth_user', JSON.stringify(user));
-      return user;
+      // Basic validation
+      if (!email || !email.includes('@')) {
+        throw new Error('Please enter a valid email address');
+      }
+      
+      if (!password || password.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+
+      // For demo purposes - would connect to real authentication in production
+      // Simply create a user object based on the provided email
+      const newUser: User = {
+        uid: `user_${Date.now()}`,
+        email: email,
+        displayName: email.split('@')[0],
+        photoURL: null
+      };
+      
+      // Set user in state and localStorage
+      setUser(newUser);
+      localStorage.setItem('auth_user', JSON.stringify(newUser));
+      
+      return newUser;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -65,13 +95,39 @@ export function useAuth() {
   // Sign up function
   const signUp = async (email: string, password: string, displayName: string): Promise<User> => {
     setLoading(true);
+    setError(null);
     
     try {
-      // Mock successful registration
-      const user = { ...MOCK_USER, email, displayName };
-      setUser(user);
-      localStorage.setItem('auth_user', JSON.stringify(user));
-      return user;
+      // Basic validation
+      if (!email || !email.includes('@')) {
+        throw new Error('Please enter a valid email address');
+      }
+      
+      if (!password || password.length < 6) {
+        throw new Error('Password must be at least 6 characters');
+      }
+      
+      if (!displayName || displayName.length < 2) {
+        throw new Error('Display name must be at least 2 characters');
+      }
+      
+      // For demo purposes - would connect to real authentication in production
+      const newUser: User = {
+        uid: `user_${Date.now()}`,
+        email: email,
+        displayName: displayName,
+        photoURL: null
+      };
+      
+      // Set user in state and localStorage
+      setUser(newUser);
+      localStorage.setItem('auth_user', JSON.stringify(newUser));
+      
+      return newUser;
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
+      setError(errorMessage);
+      throw error;
     } finally {
       setLoading(false);
     }
@@ -79,22 +135,33 @@ export function useAuth() {
 
   // Sign out function
   const signOut = async (): Promise<void> => {
-    setLoading(true);
-    
     try {
       // Clear user data
       setUser(null);
       localStorage.removeItem('auth_user');
-    } finally {
-      setLoading(false);
+    } catch (error) {
+      console.error('Sign out error:', error);
+      setError('Failed to sign out');
     }
   };
 
-  return {
+  const value = {
     user,
     loading,
+    error,
     signIn,
     signUp,
-    signOut
+    signOut,
   };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+// Custom hook to use auth
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 } 

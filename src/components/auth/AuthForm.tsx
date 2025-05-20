@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Eye, EyeOff, Droplets, Send, ArrowRight, Check } from 'lucide-react';
+import { Eye, EyeOff, Droplets, Send, ArrowRight, Check, AlertCircle } from 'lucide-react';
+import { useAuth } from '@/lib/hooks/useAuth';
 
 interface AuthFormProps {
   mode: 'login' | 'signup';
@@ -12,12 +13,15 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
   const router = useRouter();
+  const { signIn, signUp, error: authError } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [inkDrops, setInkDrops] = useState<{left: number, size: number, delay: number}[]>([]);
   
   
@@ -33,17 +37,26 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setFormError(null);
     
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      if (mode === 'login') {
+        await signIn(email, password);
+      } else {
+        await signUp(email, password, name);
+      }
+      
       setFormSubmitted(true);
       
-      // Redirect after showing success animation
+      // Redirect after successful authentication
       setTimeout(() => {
         router.push('/');
       }, 2000);
-    }, 1500);
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Authentication failed';
+      setFormError(errorMessage);
+      setLoading(false);
+    }
   };
 
   return (
@@ -159,6 +172,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ mode }) => {
                   ? 'Sign in to continue your eco journey' 
                   : 'Create an account to join our community'}
               </motion.p>
+
+              {/* Error message */}
+              {formError && (
+                <motion.div
+                  className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg text-red-700 dark:text-red-400 flex items-start"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                >
+                  <AlertCircle className="h-5 w-5 mr-2 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm">{formError}</p>
+                </motion.div>
+              )}
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 {mode === 'signup' && (
