@@ -9,7 +9,8 @@ const nextConfig = {
       'aualine.com',
       'sdmntprukwest.oaiusercontent.com',
       'sdmntprnortheu.oaiusercontent.com',
-      'sdmntpritalynorth.oaiusercontent.com'
+      'sdmntpritalynorth.oaiusercontent.com',
+      'i.pinimg.com'
     ],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
@@ -26,6 +27,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    unoptimized: process.env.NODE_ENV === 'development',
   },
   eslint: {
     dirs: ['src']

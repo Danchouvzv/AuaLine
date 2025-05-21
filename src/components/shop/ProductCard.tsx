@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, Heart } from "lucide-react";
+import { Star, ShoppingCart, Heart, ShoppingBag } from "lucide-react";
 
 // Define the product type
 interface Product {
@@ -49,111 +49,90 @@ const ProductCard = ({ product }: ProductCardProps) => {
     console.log(`Added ${product.name} to wishlist`);
   };
 
+  // Бесопасно рендерим цветной блок вместо изображения
+  const renderColorBlock = () => (
+    <div 
+      className={`w-full h-full ${product.color || 'bg-gray-200'} flex items-center justify-center`}
+    >
+      <span className="text-lg font-medium text-white">{product.name.charAt(0)}</span>
+    </div>
+  );
+
   return (
     <Link href={`/shop/${product.id}`}>
-      <motion.div
-        className="group relative bg-white dark:bg-ink-blue/20 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+      <motion.div 
+        className="group relative bg-white dark:bg-ink-blue/20 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        whileHover={{ y: -5 }}
       >
-        {/* Product Image */}
-        <div className="relative aspect-square overflow-hidden bg-gray-100 dark:bg-ink-blue/40">
-          {imageError ? (
-            // Fallback if image fails to load
-            <div className={`w-full h-full flex items-center justify-center ${product.color}`}>
-              <span className="text-6xl text-white/90">Aa</span>
-            </div>
-          ) : (
-            // Actual product image
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover transform transition-transform duration-300 group-hover:scale-105"
-              onError={() => setImageError(true)}
-            />
-          )}
+        <div className="relative aspect-square overflow-hidden">
+          {/* Всегда показываем цветной блок как безопасный вариант */}
+          {renderColorBlock()}
           
-          {/* Badges */}
+          {/* New and Best Seller Tags */}
           <div className="absolute top-2 left-2 flex flex-col gap-2">
             {product.isNew && (
-              <span className="bg-eco-leaf text-white px-2 py-1 text-xs font-bold rounded">
-                NEW
+              <span className="px-2 py-1 bg-eco-leaf text-white text-xs font-medium rounded-md">
+                New
               </span>
             )}
             {product.isBestSeller && (
-              <span className="bg-solar-yellow text-ink-blue px-2 py-1 text-xs font-bold rounded">
-                BEST SELLER
+              <span className="px-2 py-1 bg-solar-yellow text-ink-blue text-xs font-medium rounded-md">
+                Best Seller
               </span>
             )}
           </div>
           
-          {/* Quick actions */}
-          <div className="absolute top-2 right-2">
-            <button
+          {/* Quick Action Buttons */}
+          <div 
+            className={`absolute bottom-2 right-2 flex gap-2 transform ${
+              isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+            } transition-all duration-300`}
+          >
+            {/* Quick Add to Cart */}
+            <button 
+              onClick={addToCart}
+              className="p-2 bg-white dark:bg-ink-blue hover:bg-eco-leaf dark:hover:bg-eco-leaf text-gray-600 hover:text-white dark:text-gray-300 dark:hover:text-white rounded-full shadow-md"
+              aria-label="Add to cart"
+            >
+              <ShoppingBag className="h-4 w-4" />
+            </button>
+            
+            {/* Quick Add to Wishlist */}
+            <button 
               onClick={addToWishlist}
-              className="p-2 bg-white/90 dark:bg-ink-blue/90 rounded-full shadow-sm hover:bg-white dark:hover:bg-ink-blue transition-colors"
+              className="p-2 bg-white dark:bg-ink-blue hover:bg-pink-500 dark:hover:bg-pink-500 text-gray-600 hover:text-white dark:text-gray-300 dark:hover:text-white rounded-full shadow-md"
               aria-label="Add to wishlist"
             >
-              <Heart className="h-4 w-4 text-coral-red" />
+              <Heart className="h-4 w-4" />
             </button>
           </div>
         </div>
         
-        {/* Product Info */}
+        {/* Product Content */}
         <div className="p-4">
-          <h3 className="text-lg font-bold truncate">{product.name}</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">{product.name}</h3>
           
-          <div className="flex items-center mt-1 mb-2">
-            <div className="flex items-center">
-              <Star className="h-4 w-4 text-solar-yellow fill-solar-yellow" />
-              <span className="ml-1 text-sm font-medium">{product.rating}</span>
-            </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
-              ({product.reviews} reviews)
-            </span>
-          </div>
-          
-          <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2 h-10 mb-3">
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-3 line-clamp-2">
             {product.description}
           </p>
           
           <div className="flex items-center justify-between">
-            <span className="text-lg font-bold text-ink-blue dark:text-white">
-              ${product.price.toFixed(2)}
-            </span>
+            <div>
+              <span className="text-lg font-bold text-ink-blue dark:text-eco-leaf">${product.price.toFixed(2)}</span>
+            </div>
             
-            <motion.button
-              onClick={addToCart}
-              className="p-2 bg-eco-leaf text-white rounded-full hover:bg-eco-leaf/90 transition-colors"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              aria-label="Add to cart"
-            >
-              <ShoppingCart className="h-5 w-5" />
-            </motion.button>
+            <div className="flex items-center">
+              <Star className="h-4 w-4 text-solar-yellow fill-solar-yellow mr-1" />
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                {product.rating} <span className="text-gray-400 dark:text-gray-500">({product.reviews})</span>
+              </span>
+            </div>
           </div>
         </div>
-        
-        {/* Hover overlay */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: isHovered ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <div className="absolute bottom-4 left-4 right-4">
-            <span className="text-white text-sm font-medium bg-ink-blue/80 px-3 py-1 rounded-full">
-              View Details
-            </span>
-          </div>
-        </motion.div>
       </motion.div>
     </Link>
   );
