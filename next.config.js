@@ -12,6 +12,20 @@ const nextConfig = {
       'sdmntpritalynorth.oaiusercontent.com'
     ],
     formats: ['image/avif', 'image/webp'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.pinimg.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.pinterest.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
   eslint: {
     dirs: ['src']
