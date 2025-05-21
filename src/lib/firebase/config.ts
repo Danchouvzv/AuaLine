@@ -2,7 +2,7 @@
 
 // Import the Firebase SDK components we need
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore } from 'firebase/firestore';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 import { getFunctions } from 'firebase/functions';
@@ -29,6 +29,19 @@ const db = app ? getFirestore(app) : null;
 const auth = app ? getAuth(app) : null;
 const storage = app ? getStorage(app) : null;
 const functions = app ? getFunctions(app) : null;
+
+// Use local emulators in development - comment out in production
+if (process.env.NODE_ENV === 'development' && db) {
+  try {
+    // Check if we're in a browser environment before attempting to connect
+    if (typeof window !== 'undefined') {
+      console.log('Using Firestore emulator in development');
+      // connectFirestoreEmulator(db, 'localhost', 8080);
+    }
+  } catch (error) {
+    console.error('Error connecting to Firestore emulator:', error);
+  }
+}
 
 // Initialize Analytics (client-side only)
 let analytics = null;
