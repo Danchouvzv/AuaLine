@@ -53,6 +53,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // Only run on client side
     if (typeof window === 'undefined') return;
 
+    // Check if auth is initialized
+    if (!auth) {
+      console.warn('Firebase Auth is not initialized');
+      setLoading(false);
+      // Use mock user for development
+      setUser(MOCK_USER);
+      return;
+    }
+
     // Set up auth state observer
     const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
       setLoading(true);
@@ -89,6 +98,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       
       if (!password || password.length < 6) {
         throw new Error('Password must be at least 6 characters');
+      }
+
+      // Check if auth is initialized
+      if (!auth) {
+        console.warn('Firebase Auth is not initialized, using mock user');
+        setUser(MOCK_USER);
+        return MOCK_USER;
       }
 
       // Sign in with Firebase
@@ -132,6 +148,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
         throw new Error('Display name must be at least 2 characters');
       }
       
+      // Check if auth is initialized
+      if (!auth) {
+        console.warn('Firebase Auth is not initialized, using mock user');
+        // Create a mock user with the provided details
+        const mockUser: User = {
+          uid: `mock-user-${Date.now()}`,
+          email: email,
+          displayName: displayName,
+          photoURL: null,
+        };
+        setUser(mockUser);
+        return mockUser;
+      }
+      
       // Create user with Firebase
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const firebaseUser = userCredential.user;
@@ -160,6 +190,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   // Sign out function
   const signOut = async (): Promise<void> => {
     try {
+      if (!auth) {
+        console.warn('Firebase Auth is not initialized');
+        setUser(null);
+        return;
+      }
       await firebaseSignOut(auth);
       setUser(null);
     } catch (error: any) {

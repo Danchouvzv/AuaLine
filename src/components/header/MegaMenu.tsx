@@ -74,6 +74,11 @@ const MegaMenu = () => {
       path: "/impact",
       submenu: null,
     },
+    {
+      name: "Pollution Data",
+      path: "/pollution-data",
+      submenu: null,
+    },
   ];
 
   return (

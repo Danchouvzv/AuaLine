@@ -4,12 +4,13 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
-  User, LogOut, Settings, Heart, ShoppingBag, ChevronDown, 
+  User as UserIcon, LogOut, Settings, Heart, ShoppingBag, ChevronDown, 
   Leaf, BarChart2, Award, Bell, Calendar, Shield, X, Mail, Lock, UserPlus, AlertCircle
 } from "lucide-react";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { User } from "@/types";
 
 export default function NavAuth() {
   const [isOpen, setIsOpen] = useState(false);
@@ -119,7 +120,7 @@ export default function NavAuth() {
             onClick={() => setShowLoginModal(true)} 
             className="flex items-center px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
-            <User className="h-5 w-5 mr-2" />
+            <UserIcon className="h-5 w-5 mr-2" />
             Login
           </button>
           <button 
@@ -285,7 +286,7 @@ export default function NavAuth() {
                         Name
                       </label>
                       <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                        <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                         <input
                           id="display-name"
                           type="text"
@@ -382,7 +383,9 @@ export default function NavAuth() {
 
   // Calculate eco badge based on eco score
   const getEcoBadge = () => {
-    const score = user.ecoScore || 0;
+    // Use a default score of 0 if user doesn't have ecoStats
+    const mockEcoStats = { co2Saved: 0, airFiltered: 0, treesEquivalent: 0 };
+    const score = (user as any)?.ecoStats?.co2Saved || 0;
     if (score >= 80) return "Eco Champion";
     if (score >= 60) return "Eco Enthusiast";
     if (score >= 40) return "Eco Supporter";
@@ -391,7 +394,8 @@ export default function NavAuth() {
 
   // Get color class for eco badge
   const getEcoBadgeColor = () => {
-    const score = user.ecoScore || 0;
+    const mockEcoStats = { co2Saved: 0, airFiltered: 0, treesEquivalent: 0 };
+    const score = (user as any)?.ecoStats?.co2Saved || 0;
     if (score >= 80) return "bg-eco-leaf/10 text-eco-leaf";
     if (score >= 60) return "bg-solar-yellow/10 text-solar-yellow";
     if (score >= 40) return "bg-sky-blue/10 text-sky-blue";
@@ -497,15 +501,15 @@ export default function NavAuth() {
                 <div className="mt-4 grid grid-cols-3 gap-2 text-center">
                   <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2">
                     <p className="text-xs text-gray-500 dark:text-gray-400">CO₂ Saved</p>
-                    <p className="text-sm font-medium">{user.ecoStats?.co2Saved || 0} kg</p>
+                    <p className="text-sm font-medium">{(user as any)?.ecoStats?.co2Saved || 0} kg</p>
                   </div>
                   <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2">
                     <p className="text-xs text-gray-500 dark:text-gray-400">Air Filtered</p>
-                    <p className="text-sm font-medium">{user.ecoStats?.airFiltered || 0} m³</p>
+                    <p className="text-sm font-medium">{(user as any)?.ecoStats?.airFiltered || 0} m³</p>
                   </div>
                   <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-2">
                     <p className="text-xs text-gray-500 dark:text-gray-400">Tree Equivalent</p>
-                    <p className="text-sm font-medium">{user.ecoStats?.treesEquivalent || 0}</p>
+                    <p className="text-sm font-medium">{(user as any)?.ecoStats?.treesEquivalent || 0}</p>
                   </div>
                 </div>
               </div>
@@ -518,7 +522,7 @@ export default function NavAuth() {
                 className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 onClick={() => setIsOpen(false)}
               >
-                <User className="h-5 w-5 text-eco-leaf mb-1" />
+                <UserIcon className="h-5 w-5 text-eco-leaf mb-1" />
                 <span className="text-xs">Profile</span>
               </Link>
               <Link

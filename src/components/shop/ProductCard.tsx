@@ -1,10 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
-import { Star, ShoppingCart, Heart, ShoppingBag } from "lucide-react";
+import { Star, Heart, ShoppingBag } from "lucide-react";
 
 // Define the product type
 interface Product {
@@ -27,7 +26,6 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [imageError, setImageError] = useState(false);
   
   // Placeholder function for adding to cart
   const addToCart = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,8 +34,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
     
     // This would call a Firebase function or update global cart state in a real implementation
     console.log(`Added ${product.name} to cart`);
-    
-    // Animate cart icon (would be implemented in real app)
   };
   
   // Placeholder function for adding to wishlist
@@ -48,15 +44,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
     // This would call a Firebase function or update global wishlist state in a real implementation
     console.log(`Added ${product.name} to wishlist`);
   };
-
-  // Бесопасно рендерим цветной блок вместо изображения
-  const renderColorBlock = () => (
-    <div 
-      className={`w-full h-full ${product.color || 'bg-gray-200'} flex items-center justify-center`}
-    >
-      <span className="text-lg font-medium text-white">{product.name.charAt(0)}</span>
-    </div>
-  );
 
   return (
     <Link href={`/shop/${product.id}`}>
@@ -69,8 +56,12 @@ const ProductCard = ({ product }: ProductCardProps) => {
         onMouseLeave={() => setIsHovered(false)}
       >
         <div className="relative aspect-square overflow-hidden">
-          {/* Всегда показываем цветной блок как безопасный вариант */}
-          {renderColorBlock()}
+          {/* Всегда показываем цветной блок вместо изображения */}
+          <div 
+            className={`w-full h-full ${product.color || 'bg-gray-200'} flex items-center justify-center`}
+          >
+            <span className="text-3xl font-bold text-white">{product.name.charAt(0)}</span>
+          </div>
           
           {/* New and Best Seller Tags */}
           <div className="absolute top-2 left-2 flex flex-col gap-2">

@@ -146,6 +146,12 @@ const Header = () => {
                 Impact
               </Link>
               <Link
+                href="/pollution-data"
+                className="py-2 text-lg font-medium border-b border-gray-200 dark:border-gray-800"
+              >
+                Pollution Data
+              </Link>
+              <Link
                 href="/auth/login"
                 className="py-2 text-lg font-medium border-b border-gray-200 dark:border-gray-800"
               >

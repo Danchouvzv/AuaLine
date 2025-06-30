@@ -107,8 +107,8 @@ const ImpactPage = () => {
     };
 
     // Calculate base pollution captured
-    const baseImpact = productImpacts[calculatorInputs.productType] || 1.0;
-    const regionMultiplier = regionMultipliers[calculatorInputs.region] || 1.0;
+    const baseImpact = productImpacts[calculatorInputs.productType as keyof typeof productImpacts] || 1.0;
+    const regionMultiplier = regionMultipliers[calculatorInputs.region as keyof typeof regionMultipliers] || 1.0;
     
     // Calculate impact scaled by quantity, duration, and region
     const pollutionCaptured = baseImpact * calculatorInputs.quantity * 

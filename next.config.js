@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  output: 'export',
   images: {
     domains: [
       'firebasestorage.googleapis.com',
@@ -27,7 +28,8 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    unoptimized: process.env.NODE_ENV === 'development',
+    // Для статического экспорта нужно отключить Image Optimization
+    unoptimized: true,
   },
   eslint: {
     dirs: ['src']

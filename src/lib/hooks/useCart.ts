@@ -40,6 +40,14 @@ export function useCart() {
       try {
         if (user) {
           // User is logged in, load cart from Firestore
+          if (!db) {
+            console.warn('Firestore is not initialized');
+            const savedCart = loadCartFromLocalStorage();
+            setCart(savedCart || defaultCart);
+            setLoading(false);
+            return;
+          }
+          
           const cartDocRef = doc(db, 'carts', user.uid);
           
           // Real-time listener for cart updates
@@ -107,12 +115,14 @@ export function useCart() {
   // Save cart to Firestore
   const saveCartToFirestore = async (cartToSave: Cart) => {
     try {
-      if (user) {
+      if (user && db) {
         const cartDocRef = doc(db, 'carts', user.uid);
         await setDoc(cartDocRef, {
           ...cartToSave,
           updatedAt: serverTimestamp(),
         });
+      } else if (user && !db) {
+        console.warn('Firestore is not initialized, cart saved only to localStorage');
       }
     } catch (err) {
       console.error('Error saving cart to Firestore:', err);
@@ -190,7 +200,7 @@ export function useCart() {
       
       // Save to storage/database
       saveCartToLocalStorage(updatedCart);
-      if (user) {
+      if (user && db) {
         await saveCartToFirestore(updatedCart);
       }
       
@@ -224,7 +234,7 @@ export function useCart() {
       
       // Save to storage/database
       saveCartToLocalStorage(updatedCart);
-      if (user) {
+      if (user && db) {
         await saveCartToFirestore(updatedCart);
       }
       
@@ -249,7 +259,7 @@ export function useCart() {
       
       // Save to storage/database
       saveCartToLocalStorage(updatedCart);
-      if (user) {
+      if (user && db) {
         await saveCartToFirestore(updatedCart);
       }
       
@@ -264,18 +274,16 @@ export function useCart() {
   // Clear cart
   const clearCart = async () => {
     try {
-      const updatedCart = defaultCart;
-      
-      // Update state
-      setCart(updatedCart);
+      // Update state with empty cart
+      setCart(defaultCart);
       
       // Save to storage/database
-      saveCartToLocalStorage(updatedCart);
-      if (user) {
-        await saveCartToFirestore(updatedCart);
+      saveCartToLocalStorage(defaultCart);
+      if (user && db) {
+        await saveCartToFirestore(defaultCart);
       }
       
-      return updatedCart;
+      return defaultCart;
     } catch (err: any) {
       console.error('Error clearing cart:', err);
       setError(err.message || 'Failed to clear cart');
@@ -286,46 +294,72 @@ export function useCart() {
   // Apply coupon code
   const applyCoupon = async (code: string) => {
     try {
-      // In a real implementation, you would validate the coupon code with Firebase
-      // Here we'll simulate a simple discount
+      // In a real app, you would validate the coupon code here
+      // For this demo, we'll just hard-code a few valid coupon codes
       
-      // Example: Check if coupon exists and is valid
-      const couponRef = doc(db, 'coupons', code.toUpperCase());
-      const couponDoc = await getDoc(couponRef);
+      // Validate coupon by checking a "coupons" collection in Firestore
+      let discountAmount = 0;
+      let isValid = false;
       
-      if (!couponDoc.exists()) {
+      if (db) {
+        // Attempt to check coupon in Firestore
+        try {
+          const couponDocRef = doc(db, 'coupons', code.toUpperCase());
+          const couponDoc = await getDoc(couponDocRef);
+          
+          if (couponDoc.exists()) {
+            const couponData = couponDoc.data();
+            isValid = couponData.isActive && 
+                     (!couponData.expiresAt || couponData.expiresAt.toDate() > new Date()) &&
+                     (!couponData.usageLimit || couponData.usageCount < couponData.usageLimit);
+            
+            if (isValid) {
+              if (couponData.type === 'percentage') {
+                discountAmount = (cart.subtotal * couponData.value) / 100;
+              } else {
+                discountAmount = couponData.value;
+              }
+              
+              // Ensure discount doesn't exceed subtotal
+              discountAmount = Math.min(discountAmount, cart.subtotal);
+            }
+          }
+        } catch (err) {
+          console.error('Error validating coupon in Firestore:', err);
+          // Fall back to demo coupons
+        }
+      }
+      
+      // If Firestore validation didn't work, use hard-coded demo coupons
+      if (!isValid) {
+        switch (code.toUpperCase()) {
+          case 'ECO10':
+            discountAmount = cart.subtotal * 0.1; // 10% off
+            isValid = true;
+            break;
+          case 'FREESHIP':
+            discountAmount = cart.shipping;
+            isValid = true;
+            break;
+          case 'ECO20':
+            discountAmount = cart.subtotal * 0.2; // 20% off
+            isValid = true;
+            break;
+          default:
+            throw new Error('Invalid coupon code');
+        }
+      }
+      
+      if (!isValid) {
         throw new Error('Invalid coupon code');
       }
       
-      const couponData = couponDoc.data();
-      
-      if (!couponData.isActive || (couponData.expiresAt && couponData.expiresAt.toDate() < new Date())) {
-        throw new Error('Coupon has expired');
-      }
-      
-      if (couponData.usageLimit && couponData.usageCount >= couponData.usageLimit) {
-        throw new Error('Coupon usage limit reached');
-      }
-      
-      // Calculate discount
-      let discount = 0;
-      if (couponData.type === 'percentage') {
-        discount = (cart.subtotal * couponData.value) / 100;
-      } else {
-        discount = couponData.value;
-      }
-      
-      // Apply minimum order value check if applicable
-      if (couponData.minOrderValue && cart.subtotal < couponData.minOrderValue) {
-        throw new Error(`Order must be at least $${couponData.minOrderValue} to use this coupon`);
-      }
-      
-      // Update cart with coupon code and discount
+      // Apply discount
       const updatedCart: Cart = {
         ...cart,
-        couponCode: code,
-        discount,
-        total: cart.subtotal + cart.tax + cart.shipping - discount,
+        couponCode: code.toUpperCase(),
+        discount: discountAmount,
+        total: cart.subtotal + cart.tax + cart.shipping - discountAmount
       };
       
       // Update state
@@ -333,7 +367,7 @@ export function useCart() {
       
       // Save to storage/database
       saveCartToLocalStorage(updatedCart);
-      if (user) {
+      if (user && db) {
         await saveCartToFirestore(updatedCart);
       }
       
@@ -345,14 +379,14 @@ export function useCart() {
     }
   };
 
-  // Remove coupon code
+  // Remove coupon
   const removeCoupon = async () => {
     try {
       const updatedCart: Cart = {
         ...cart,
         couponCode: undefined,
         discount: 0,
-        total: cart.subtotal + cart.tax + cart.shipping,
+        total: cart.subtotal + cart.tax + cart.shipping
       };
       
       // Update state
@@ -360,7 +394,7 @@ export function useCart() {
       
       // Save to storage/database
       saveCartToLocalStorage(updatedCart);
-      if (user) {
+      if (user && db) {
         await saveCartToFirestore(updatedCart);
       }
       

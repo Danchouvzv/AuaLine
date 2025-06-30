@@ -135,29 +135,21 @@ Before diving into AuaLine development, ensure you have:
 
 ## 🛠️ Getting Started
 
-### 1. Clone & Install
+First, run the development server:
 
 ```bash
-# Clone the repository
-git clone https://github.com/Danchouvzv/AuaLine.git
-
-# Navigate to project directory
-cd AuaLine
-
-# Install dependencies
-npm install
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-### 2. Environment Setup
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```bash
-# Create .env.local file from example
-cp .env.local.example .env.local
-
-# Open and edit .env.local with your credentials
-```
-
-### 3. Firebase Configuration
+## Firebase Configuration
 
 1. Create a project in the [Firebase Console](https://console.firebase.google.com)
 2. Enable Authentication (Email/Password and Google providers)
@@ -189,13 +181,35 @@ For Firestore:
 
 </details>
 
-### 4. Start Development Server
+## Deployment
 
+The application is automatically deployed to Firebase Hosting when changes are pushed to the main branch. The deployment workflow is configured in `.github/workflows/firebase-hosting.yml`.
+
+### Manual Deployment
+
+To deploy manually:
+
+1. Build the application:
 ```bash
-npm run dev
+npm run build
 ```
 
-Visit [http://localhost:3000](http://localhost:3000) to see your application running.
+2. Deploy to Firebase Hosting:
+```bash
+npm run deploy
+```
+
+### GitHub Actions Setup
+
+For GitHub Actions deployment, you need to set up the following secrets in your repository:
+
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
+- `FIREBASE_SERVICE_ACCOUNT` (Firebase service account JSON for deployment)
 
 ---
 

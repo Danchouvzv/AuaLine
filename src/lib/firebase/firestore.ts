@@ -26,6 +26,10 @@ export const getDocumentById = async <T>(
   docId: string
 ): Promise<T | null> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      return null;
+    }
     const docRef = doc(db, collectionName, docId);
     const docSnap = await getDoc(docRef);
     
@@ -50,6 +54,10 @@ export const queryDocuments = async <T>(
   lastDoc: DocumentSnapshot<DocumentData> | null;
 }> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      return { docs: [], lastDoc: null };
+    }
     const collectionRef = collection(db, collectionName);
     
     // Build the query with provided constraints
@@ -85,6 +93,10 @@ export const addDocument = async <T>(
   data: Omit<T, 'id'>
 ): Promise<string> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      throw new Error('Firestore is not initialized');
+    }
     const collectionRef = collection(db, collectionName);
     const docRef = await addDoc(collectionRef, {
       ...data,
@@ -106,6 +118,10 @@ export const updateDocument = async <T>(
   data: Partial<T>
 ): Promise<void> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      throw new Error('Firestore is not initialized');
+    }
     const docRef = doc(db, collectionName, docId);
     await updateDoc(docRef, {
       ...data,
@@ -123,6 +139,10 @@ export const deleteDocument = async (
   docId: string
 ): Promise<void> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      throw new Error('Firestore is not initialized');
+    }
     const docRef = doc(db, collectionName, docId);
     await deleteDoc(docRef);
   } catch (error) {
@@ -141,6 +161,10 @@ export const getDocumentsByField = async <T>(
   limitCount: number = 10
 ): Promise<T[]> => {
   try {
+    if (!db) {
+      console.error('Firestore is not initialized');
+      return [];
+    }
     const collectionRef = collection(db, collectionName);
     const q = query(
       collectionRef,
