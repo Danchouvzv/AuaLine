@@ -159,7 +159,7 @@ export default function PollutionDataPage() {
                   <tr className="border-b border-slate-100 dark:border-slate-700">
                     <td className="py-3 px-4 text-slate-900 dark:text-white">Индия</td>
                     <td className="py-3 px-4 text-orange-600 dark:text-orange-400 font-bold">54.4</td>
-                    <td className="py-3 px-4 text-orange-600 dark:text-orange-400">>10×</td>
+                    <td className="py-3 px-4 text-orange-600 dark:text-orange-400">&gt;10×</td>
                   </tr>
                 </tbody>
               </table>
