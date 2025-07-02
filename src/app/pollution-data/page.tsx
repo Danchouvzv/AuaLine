@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, AlertTriangle, Globe, Heart, Lungs, Baby, Brain } from 'lucide-react';
+import { ArrowLeft, AlertTriangle, Globe, Heart, Activity, Baby, Brain } from 'lucide-react';
 import Link from 'next/link';
 
 export default function PollutionDataPage() {
@@ -243,7 +243,7 @@ export default function PollutionDataPage() {
           {/* Section 5: PM2.5 Related Diseases */}
           <motion.div variants={itemVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
             <div className="flex items-center mb-6">
-              <Lungs className="h-8 w-8 text-blue-500 mr-3" />
+              <Activity className="h-8 w-8 text-blue-500 mr-3" />
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
                 5. Болезни, связанные с PM2.5
               </h2>
@@ -261,7 +261,7 @@ export default function PollutionDataPage() {
               </div>
               
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
-                <Lungs className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-3" />
+                <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-3" />
                 <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
                   ХОБЛ и инфекции
                 </h4>
@@ -311,7 +311,7 @@ export default function PollutionDataPage() {
               </div>
               
               <div className="bg-indigo-50 dark:bg-indigo-900/20 rounded-lg p-6">
-                <Lungs className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mb-3" />
+                <Activity className="h-6 w-6 text-indigo-600 dark:text-indigo-400 mb-3" />
                 <h4 className="font-semibold text-indigo-800 dark:text-indigo-300 mb-2">
                   Астма у детей в Европе
                 </h4>
