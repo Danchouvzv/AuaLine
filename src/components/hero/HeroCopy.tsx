@@ -1,8 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const HeroCopy = () => {
+  const { t } = useLanguage();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -33,15 +36,13 @@ const HeroCopy = () => {
       
       <motion.div variants={item}>
         <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl font-bold text-white font-heading leading-tight">
-          Breathe Innovation,{" "}
-          <span className="text-solar-yellow">Print Sustainably</span>
+          {t('hero.title')}
         </h1>
       </motion.div>
       
       <motion.div variants={item}>
         <p className="mt-6 text-lg md:text-xl text-white/80 max-w-lg">
-          Transforming air pollution into premium eco-friendly ink products.
-          Every purchase helps clean our air and reduces your environmental footprint.
+          {t('hero.subtitle')}
         </p>
       </motion.div>
       

@@ -9,6 +9,7 @@ import BlogPreview from "@/components/blog/BlogPreview";
 import Testimonials from "@/components/sections/Testimonials";
 import AboutPreview from "@/components/sections/AboutPreview";
 import CtaBanner from "@/components/sections/CtaBanner";
+import PollutionSources from '@/components/sections/PollutionSources';
 
 export const metadata: Metadata = {
   title: "AuaLine - Air-to-Ink Marketplace",
@@ -45,6 +46,9 @@ export default function Home() {
       
       {/* Pollution Alert Section */}
       <PollutionAlert />
+      
+      {/* Pollution Sources Section */}
+      <PollutionSources />
       
       {/* Eco Impact Calculator Preview */}
       <EcoImpact />

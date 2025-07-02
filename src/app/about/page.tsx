@@ -4,9 +4,11 @@ import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { ArrowRight, Users, Lightbulb, Award, TrendingUp, Github } from 'lucide-react';
+import { ArrowRight, Users, Lightbulb, Award, TrendingUp, Github, AlertTriangle, Heart, Activity, Globe, Skull } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AboutPage() {
+  const { t, language } = useLanguage();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -62,7 +64,9 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Turning Almaty's pollution crisis into a creative solution
+            {language === 'ru' ? 'Превращая кризис загрязнения Алматы в творческое решение' :
+             language === 'en' ? 'Turning Almaty\'s pollution crisis into a creative solution' :
+             'Алматының ластану дағдарысын шығармашылық шешімге айналдыру'}
           </motion.p>
           
           <motion.div
@@ -75,7 +79,9 @@ export default function AboutPage() {
               href="/impact" 
               className="bg-eco-leaf hover:bg-eco-leaf/90 text-white px-6 py-3 rounded-lg flex items-center font-medium transition-colors"
             >
-              See Our Impact
+              {language === 'ru' ? 'Смотреть наше воздействие' :
+               language === 'en' ? 'See Our Impact' :
+               'Біздің әсерімізді көру'}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
             
@@ -83,7 +89,9 @@ export default function AboutPage() {
               href="/shop" 
               className="bg-white/10 hover:bg-white/20 text-white px-6 py-3 rounded-lg flex items-center font-medium transition-colors"
             >
-              Explore Products
+              {language === 'ru' ? 'Исследовать продукты' :
+               language === 'en' ? 'Explore Products' :
+               'Өнімдерді зерттеу'}
             </Link>
           </motion.div>
         </div>
@@ -100,6 +108,220 @@ export default function AboutPage() {
         </div>
       </section>
       
+      {/* PM2.5 Crisis Statistics Section */}
+      <section className="py-20 bg-red-50 dark:bg-red-900/10">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
+            >
+              <div className="flex items-center justify-center mb-4">
+                <AlertTriangle className="h-12 w-12 text-red-500 mr-3" />
+                <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
+                  {language === 'ru' ? 'Глобальный кризис PM2.5' :
+                   language === 'en' ? 'Global PM2.5 Crisis' :
+                   'Жаһандық PM2.5 дағдарысы'}
+                </h2>
+              </div>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                {language === 'ru' ? 'Масштабы проблемы, которую мы решаем с помощью нашей технологии' :
+                 language === 'en' ? 'The scale of the problem we\'re solving with our technology' :
+                 'Біздің технологиямызбен шешетін мәселенің ауқымы'}
+              </p>
+            </motion.div>
+
+            {/* Critical Statistics Grid */}
+            <div className="grid md:grid-cols-3 gap-8 mb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Globe className="h-8 w-8 text-red-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">99%</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'населения мира' :
+                     language === 'en' ? 'of world population' :
+                     'әлем халқының'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'превышают норму ВОЗ по PM2.5 (5 µg/m³)' :
+                     language === 'en' ? 'exceed WHO PM2.5 standards (5 µg/m³)' :
+                     'ДДҰ PM2.5 нормасынан асады (5 µg/m³)'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Skull className="h-8 w-8 text-red-600" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">8.1M</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'смертей в год' :
+                     language === 'en' ? 'deaths per year' :
+                     'жылдық өлім'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'от загрязнения воздуха (2021)' :
+                     language === 'en' ? 'from air pollution (2021)' :
+                     'ауа ластануынан (2021)'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <TrendingUp className="h-8 w-8 text-orange-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">79.9</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">µg/m³</div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'максимальный уровень (16× выше нормы)' :
+                     language === 'en' ? 'maximum level (16× above normal)' :
+                     'максималды деңгей (нормадан 16×)'}
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Most Polluted Countries Table */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg mb-16"
+            >
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 text-center">
+                {language === 'ru' ? 'Самые загрязнённые страны (2023)' :
+                 language === 'en' ? 'Most Polluted Countries (2023)' :
+                 'Ең ластанған елдер (2023)'}
+              </h3>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-slate-200 dark:border-slate-700">
+                      <th className="text-left py-3 px-4 font-semibold text-slate-900 dark:text-white">
+                        {language === 'ru' ? 'Страна' : language === 'en' ? 'Country' : 'Ел'}
+                      </th>
+                      <th className="text-left py-3 px-4 font-semibold text-slate-900 dark:text-white">PM2.5 (µg/m³)</th>
+                      <th className="text-left py-3 px-4 font-semibold text-slate-900 dark:text-white">
+                        {language === 'ru' ? 'Превышение нормы' : language === 'en' ? 'Above Standard' : 'Нормадан асуы'}
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="border-b border-slate-100 dark:border-slate-700">
+                      <td className="py-3 px-4 text-slate-900 dark:text-white">
+                        {language === 'ru' ? 'Бангладеш' : language === 'en' ? 'Bangladesh' : 'Бангладеш'}
+                      </td>
+                      <td className="py-3 px-4 text-red-600 dark:text-red-400 font-bold">79.9</td>
+                      <td className="py-3 px-4 text-red-600 dark:text-red-400">≈ 16×</td>
+                    </tr>
+                    <tr className="border-b border-slate-100 dark:border-slate-700">
+                      <td className="py-3 px-4 text-slate-900 dark:text-white">
+                        {language === 'ru' ? 'Пакистан' : language === 'en' ? 'Pakistan' : 'Пәкістан'}
+                      </td>
+                      <td className="py-3 px-4 text-red-600 dark:text-red-400 font-bold">73.7</td>
+                      <td className="py-3 px-4 text-red-600 dark:text-red-400">≈ 15×</td>
+                    </tr>
+                    <tr className="border-b border-slate-100 dark:border-slate-700">
+                      <td className="py-3 px-4 text-slate-900 dark:text-white">
+                        {language === 'ru' ? 'Индия' : language === 'en' ? 'India' : 'Үндістан'}
+                      </td>
+                      <td className="py-3 px-4 text-orange-600 dark:text-orange-400 font-bold">54.4</td>
+                      <td className="py-3 px-4 text-orange-600 dark:text-orange-400">&gt;10×</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </motion.div>
+
+            {/* Health Impact Grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="grid md:grid-cols-2 lg:grid-cols-4 gap-6"
+            >
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6">
+                <Heart className="h-6 w-6 text-red-600 dark:text-red-400 mb-3" />
+                <h4 className="font-semibold text-red-800 dark:text-red-300 mb-2">
+                  {language === 'ru' ? 'Кардиозаболевания' : language === 'en' ? 'Heart Disease' : 'Жүрек аурулары'}
+                </h4>
+                <p className="text-sm text-red-700 dark:text-red-400">
+                  {language === 'ru' ? 'инфаркты, инсульты, гипертензия' :
+                   language === 'en' ? 'heart attacks, strokes, hypertension' :
+                   'жүрек соғысы, инсульт, гипертензия'}
+                </p>
+              </div>
+              
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+                <Activity className="h-6 w-6 text-blue-600 dark:text-blue-400 mb-3" />
+                <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
+                  {language === 'ru' ? 'ХОБЛ и инфекции' : language === 'en' ? 'COPD & Infections' : 'ХОБЛ және инфекциялар'}
+                </h4>
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  {language === 'ru' ? '48% ХОБЛ, пневмонии у детей/пожилых' :
+                   language === 'en' ? '48% COPD, pneumonia in children/elderly' :
+                   '48% ХОБЛ, балалар/егделердегі пневмония'}
+                </p>
+              </div>
+              
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                <div className="w-6 h-6 bg-purple-600 dark:bg-purple-400 rounded mb-3"></div>
+                <h4 className="font-semibold text-purple-800 dark:text-purple-300 mb-2">
+                  {language === 'ru' ? 'Рак лёгких' : language === 'en' ? 'Lung Cancer' : 'Өкпе ісігі'}
+                </h4>
+                <p className="text-sm text-purple-700 dark:text-purple-400">
+                  {language === 'ru' ? '29% смертей связаны с загрязнением' :
+                   language === 'en' ? '29% deaths linked to pollution' :
+                   '29% өлім ластанумен байланысты'}
+                </p>
+              </div>
+              
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6">
+                <Users className="h-6 w-6 text-yellow-600 dark:text-yellow-400 mb-3" />
+                <h4 className="font-semibold text-yellow-800 dark:text-yellow-300 mb-2">
+                  {language === 'ru' ? 'Детская смертность' : language === 'en' ? 'Child Mortality' : 'Балалар өлімі'}
+                </h4>
+                <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                  {language === 'ru' ? '700,000 детей до 5 лет (2021)' :
+                   language === 'en' ? '700,000 children under 5 (2021)' :
+                   '5 жасқа дейінгі 700,000 бала (2021)'}
+                </p>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+      
       {/* Our story section */}
       <section className="py-20">
         <div className="container mx-auto px-4">
@@ -111,12 +333,18 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
               className="bg-gray-50 dark:bg-ink-blue/50 p-6 md:p-8 rounded-xl mb-12 border-l-4 border-eco-leaf"
             >
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4">The Crisis</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-4">
+                {language === 'ru' ? 'Кризис' : language === 'en' ? 'The Crisis' : 'Дағдарыс'}
+              </h2>
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-4">
-                In 2025, Almaty topped the global rankings for the most polluted air in the world. This wasn't just a statistic — it was the air we breathed every day. The pollution crisis posed a serious threat to public health, especially for children and the elderly.
+                {language === 'ru' ? 'В 2025 году Алматы возглавил мировые рейтинги самого загрязненного воздуха в мире. Это была не просто статистика — это был воздух, которым мы дышали каждый день. Кризис загрязнения представлял серьезную угрозу для общественного здоровья, особенно для детей и пожилых людей.' :
+                 language === 'en' ? 'In 2025, Almaty topped the global rankings for the most polluted air in the world. This wasn\'t just a statistic — it was the air we breathed every day. The pollution crisis posed a serious threat to public health, especially for children and the elderly.' :
+                 '2025 жылы Алматы әлемдегі ең ластанған ауасы бойынша жаһандық рейтингті басқарды. Бұл тек статистика ғана емес еді — бұл біз күн сайын дем алатын ауа болды. Ластану дағдарысы қоғамдық денсаулық үшін, әсіресе балалар мен кәрілер үшін қауіпті қатер төндірді.'}
               </p>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                As teenagers growing up in Almaty, we experienced the consequences firsthand: increased respiratory issues, reduced outdoor activities, and a city shrouded in smog for months. We knew something had to be done.
+                {language === 'ru' ? 'Как подростки, выросшие в Алматы, мы на собственном опыте испытали последствия: увеличение респираторных заболеваний, сокращение активности на свежем воздухе и город, окутанный смогом месяцами. Мы знали, что нужно что-то делать.' :
+                 language === 'en' ? 'As teenagers growing up in Almaty, we experienced the consequences firsthand: increased respiratory issues, reduced outdoor activities, and a city shrouded in smog for months. We knew something had to be done.' :
+                 'Алматыда өсіп келе жатқан жасөспірімдер ретінде біз салдарларды тікелей бастан өткердік: тыныс алу жолдарының проблемаларының артуы, сыртқы белсенділіктің азаюы және айлар бойы түтінге оранған қала. Біз бірдеңе істеу керектігін білдік.'}
               </p>
             </motion.div>
             

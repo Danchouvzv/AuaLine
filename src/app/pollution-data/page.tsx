@@ -332,6 +332,151 @@ export default function PollutionDataPage() {
             </div>
           </motion.div>
 
+          {/* Section 6: Health Losses - DALY and Mortality */}
+          <motion.div variants={itemVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-sm">💀</span>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                6. Потери здоровья: DALY и смертность
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-6 col-span-full">
+                <h4 className="font-semibold text-red-800 dark:text-red-300 mb-4 text-center">
+                  Глобальная смертность (2021)
+                </h4>
+                <div className="text-center">
+                  <p className="text-4xl font-bold text-red-600 dark:text-red-400 mb-2">8.1 млн</p>
+                  <p className="text-sm text-red-700 dark:text-red-400 mb-4">общая смертность от загрязнения воздуха</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <div className="bg-white dark:bg-slate-700 rounded-lg p-4">
+                      <p className="text-2xl font-bold text-red-600 dark:text-red-400">4.7 млн</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">от наружного PM2.5</p>
+                    </div>
+                    <div className="bg-white dark:bg-slate-700 rounded-lg p-4">
+                      <p className="text-2xl font-bold text-orange-600 dark:text-orange-400">3.1 млн</p>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">от внутри-домашнего загрязнения</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-6">
+                <h4 className="font-semibold text-orange-800 dark:text-orange-300 mb-2">
+                  Общие DALY
+                </h4>
+                <p className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-2">120 млн</p>
+                <p className="text-sm text-orange-700 dark:text-orange-400">
+                  потерянных лет здоровой жизни
+                </p>
+              </div>
+              
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6">
+                <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">
+                  Европа
+                </h4>
+                <p className="text-xl font-bold text-blue-600 dark:text-blue-400 mb-2">416,000–800,000</p>
+                <p className="text-sm text-blue-700 dark:text-blue-400">
+                  смертей ежегодно
+                </p>
+              </div>
+              
+              <div className="bg-purple-50 dark:bg-purple-900/20 rounded-lg p-6">
+                <h4 className="font-semibold text-purple-800 dark:text-purple-300 mb-2">
+                  Рост с 1990 по 2021
+                </h4>
+                <p className="text-2xl font-bold text-purple-600 dark:text-purple-400 mb-2">+102%</p>
+                <p className="text-sm text-purple-700 dark:text-purple-400">
+                  смертности от наружного PM2.5
+                </p>
+              </div>
+              
+              <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg p-6 col-span-full md:col-span-2 lg:col-span-1">
+                <h4 className="font-semibold text-yellow-800 dark:text-yellow-300 mb-2">
+                  Влияние на продолжительность жизни
+                </h4>
+                <p className="text-2xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">−2.9 года</p>
+                <p className="text-sm text-yellow-700 dark:text-yellow-400">
+                  к средней продолжительности жизни (2015)
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Section 7: Pollution Sources */}
+          <motion.div variants={itemVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
+            <div className="flex items-center mb-6">
+              <div className="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center mr-3">
+                <span className="text-white font-bold text-sm">🏭</span>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                7. Источники загрязнения
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">
+                  Наружные источники
+                </h3>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-gray-700 dark:text-gray-300">ТЭС и ТЭЦ</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-gray-700 dark:text-gray-300">Транспорт</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-gray-700 dark:text-gray-300">Промышленные выбросы</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-gray-700 dark:text-gray-300">Пыль</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-gray-700 dark:text-gray-300">Пожары</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-orange-50 dark:bg-orange-900/20 rounded-lg p-6">
+                <h3 className="text-xl font-semibold text-orange-800 dark:text-orange-200 mb-4">
+                  Домашние источники
+                </h3>
+                <div className="text-center mb-4">
+                  <p className="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">3.6 млрд</p>
+                  <p className="text-sm text-orange-700 dark:text-orange-400">человек подвержены</p>
+                </div>
+                <ul className="space-y-3">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-brown-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-orange-700 dark:text-orange-300">Дрова</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-gray-800 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-orange-700 dark:text-orange-300">Уголь</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-green-700 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-orange-700 dark:text-orange-300">Навоз</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-700 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-orange-700 dark:text-orange-300">Керосин</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Call to Action */}
           <motion.div 
             variants={itemVariants}

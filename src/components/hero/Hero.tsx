@@ -6,8 +6,10 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import InkBottle3D from "./InkBottle3D";
 import HeroCopy from "./HeroCopy";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 const Hero = () => {
+  const { t } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
   
   // Parallax effect based on scroll
@@ -47,14 +49,14 @@ const Hero = () => {
                 href="/shop"
                 className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md text-ink-blue bg-solar-yellow hover:bg-solar-yellow/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-solar-yellow shadow-lg transform transition hover:-translate-y-0.5"
               >
-                Shop Now
+                {t('hero.cta-shop')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
               <Link
                 href="/marketing/impact"
                 className="inline-flex items-center justify-center px-6 py-3 text-base font-medium rounded-md border-2 border-sky-blue text-sky-blue bg-transparent hover:bg-sky-blue/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-blue"
               >
-                Calculate Impact
+                {t('hero.cta-learn')}
               </Link>
             </div>
           </motion.div>

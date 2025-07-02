@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/theme-provider';
 import { QueryProvider } from '@/components/query-provider';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 import Header from '@/components/header/Header';
 import Footer from '@/components/layout/Footer';
 import dynamic from 'next/dynamic';
@@ -27,13 +28,15 @@ export default function RootLayoutClient({ children }: RootLayoutClientProps) {
       disableTransitionOnChange
     >
       <QueryProvider>
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-          </CartProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+            </CartProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </QueryProvider>
     </ThemeProvider>
   );

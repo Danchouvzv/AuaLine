@@ -12,6 +12,7 @@ import Logo from "./Logo";
 import ThemeToggle from "./ThemeToggle";
 import MobileSearch from "./MobileSearch";
 import NavAuth from "./NavAuth";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 // Dynamically import MiniCart with no SSR to avoid Firebase errors
 const MiniCart = dynamic(() => import('../cart/MiniCart'), { 
@@ -78,8 +79,8 @@ const Header = () => {
           <nav className="hidden md:flex items-center space-x-8">
             <MegaMenu />
             
-            {/* Language Switcher Placeholder */}
-            <div className="text-sm font-medium">EN</div>
+            {/* Language Switcher */}
+            <LanguageSwitcher />
 
             {/* Theme Toggle */}
             <ThemeToggle />

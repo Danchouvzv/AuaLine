@@ -3,37 +3,58 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Wind, Filter, Droplet } from "lucide-react";
-
-const features = [
-  {
-    title: "Capture Air",
-    description: "Our proprietary technology captures harmful PM2.5 particles and carbon emissions from urban environments.",
-    icon: Wind,
-    stat: "1.2 tons",
-    statLabel: "of air filtered monthly",
-    color: "bg-sky-blue",
-  },
-  {
-    title: "Filter PM2.5",
-    description: "We extract and purify the captured carbon, transforming environmental pollution into usable materials.",
-    icon: Filter,
-    stat: "99.7%",
-    statLabel: "particle filtration rate",
-    color: "bg-solar-yellow",
-  },
-  {
-    title: "Create Ink",
-    description: "The processed carbon is converted into premium, eco-friendly ink with vibrant, long-lasting colors.",
-    icon: Droplet,
-    stat: "5x",
-    statLabel: "lower carbon footprint",
-    color: "bg-eco-leaf",
-  },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import PollutionStats from "./PollutionStats";
 
 const WhatWeDo = () => {
+  const { t, language } = useLanguage();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: false, amount: 0.3 });
+
+  const features = [
+    {
+      title: language === 'ru' ? "Захват воздуха" : 
+             language === 'en' ? "Capture Air" :
+             "Ауаны ұстау",
+      description: language === 'ru' ? "Наша запатентованная технология захватывает вредные частицы PM2.5 и углеродные выбросы из городской среды." : 
+                   language === 'en' ? "Our proprietary technology captures harmful PM2.5 particles and carbon emissions from urban environments." :
+                   "Біздің патенттелген технологиямыз қалалық ортадан зиянды PM2.5 бөлшектері мен көміртек шығарындыларын ұстайды.",
+      icon: Wind,
+      stat: "1.2",
+      statLabel: language === 'ru' ? "тонн воздуха фильтруется ежемесячно" : 
+                 language === 'en' ? "tons of air filtered monthly" :
+                 "тонн ауа айына сүзіледі",
+      color: "bg-sky-blue",
+    },
+    {
+      title: language === 'ru' ? "Фильтрация PM2.5" : 
+             language === 'en' ? "Filter PM2.5" :
+             "PM2.5 сүзу",
+      description: language === 'ru' ? "Мы извлекаем и очищаем захваченный углерод, превращая экологическое загрязнение в полезные материалы." : 
+                   language === 'en' ? "We extract and purify the captured carbon, transforming environmental pollution into usable materials." :
+                   "Біз ұсталған көміртекті алып, тазартамыз, экологиялық ластануды пайдалы материалдарға айналдырамыз.",
+      icon: Filter,
+      stat: "99.7%",
+      statLabel: language === 'ru' ? "степень фильтрации частиц" : 
+                 language === 'en' ? "particle filtration rate" :
+                 "бөлшектерді сүзу дәрежесі",
+      color: "bg-solar-yellow",
+    },
+    {
+      title: language === 'ru' ? "Создание чернил" : 
+             language === 'en' ? "Create Ink" :
+             "Сия жасау",
+      description: language === 'ru' ? "Обработанный углерод превращается в премиальные, экологически чистые чернила с яркими, долговечными цветами." : 
+                   language === 'en' ? "The processed carbon is converted into premium, eco-friendly ink with vibrant, long-lasting colors." :
+                   "Өңделген көміртек жарқын, ұзақ мерзімді түстері бар премиум, экологиялық таза сияға айналады.",
+      icon: Droplet,
+      stat: "5x",
+      statLabel: language === 'ru' ? "меньше углеродный след" : 
+                 language === 'en' ? "lower carbon footprint" :
+                 "аз көміртек ізі",
+      color: "bg-eco-leaf",
+    },
+  ];
   
   const container = {
     hidden: { opacity: 0 },
@@ -61,13 +82,30 @@ const WhatWeDo = () => {
             transition={{ duration: 0.5 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold font-heading mb-4">
-              What We Do
+              {t('what-we-do.title')}
             </h2>
             <p className="text-lg max-w-2xl mx-auto text-gray-600 dark:text-gray-300">
-              From harmful air pollution to sustainable ink products - our three-step process.
+              {t('what-we-do.subtitle')}
             </p>
           </motion.div>
         </div>
+
+        {/* Pollution Statistics */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-16"
+        >
+          <div className="bg-slate-50 dark:bg-slate-800 rounded-2xl p-8">
+            <h3 className="text-xl font-semibold text-center mb-8 text-slate-900 dark:text-white">
+              {language === 'ru' ? 'Проблема, которую мы решаем' : 
+               language === 'en' ? 'The Problem We Solve' :
+               'Біз шешетін мәселе'}
+            </h3>
+            <PollutionStats variant="compact" />
+          </div>
+        </motion.div>
 
         <motion.div
           ref={ref}

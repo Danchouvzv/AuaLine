@@ -1,13 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { ArrowRight, Droplets, Wind, Leaf, BarChart3, Users, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { ArrowRight, Droplets, Wind, Leaf, BarChart3, Users, TrendingUp, Recycle, Calculator, Plus, Minus, Heart, Brain, Baby, Shield, Activity } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import RadialProgress from '@/components/impact/RadialProgress';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 20 },
@@ -25,6 +26,7 @@ const staggerContainer = {
 };
 
 const ImpactPage = () => {
+  const { t, language } = useLanguage();
   const [scrollY, setScrollY] = useState(0);
   const [pollutionSaved, setPollutionSaved] = useState(0);
   const [treesEquivalent, setTreesEquivalent] = useState(0);
@@ -49,6 +51,14 @@ const ImpactPage = () => {
     tradInkAvoided: 0,
     treesPlanted: 0
   });
+
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.7]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -162,7 +172,7 @@ const ImpactPage = () => {
   };
 
   return (
-    <div className="relative overflow-x-hidden">
+    <div className="relative overflow-x-hidden" ref={containerRef}>
       {/* Hero Section with Parallax */}
       <section className="relative h-[70vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-emerald-800 to-emerald-950 text-white">
         <div 
@@ -179,8 +189,11 @@ const ImpactPage = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            style={{ opacity }}
           >
-            Our Environmental <span className="text-amber-400">Impact</span>
+            {language === 'ru' ? 'Наше воздействие' :
+             language === 'en' ? 'Our Impact' :
+             'Біздің әсер'}
           </motion.h1>
           <motion.p 
             className="text-xl md:text-2xl max-w-3xl mx-auto mb-8"
@@ -188,7 +201,9 @@ const ImpactPage = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.3 }}
           >
-            Every product we create helps clean our air and transforms pollution into something beautiful.
+            {language === 'ru' ? 'Каждая ручка AuaLine представляет часы очищенного воздуха и спасённых жизней' :
+             language === 'en' ? 'Every AuaLine pen represents hours of clean air and lives saved' :
+             'Әрбір AuaLine қаламы таза ауа сағаттарын және құтқарылған өмірді білдіреді'}
           </motion.p>
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -202,451 +217,707 @@ const ImpactPage = () => {
         </div>
       </section>
 
-      {/* Impact Statistics */}
-      <section className="py-16 bg-gradient-to-b from-white to-slate-50 dark:from-slate-950 dark:to-slate-900">
+      {/* Health Impact Statistics */}
+      <section className="py-20 bg-red-50 dark:bg-red-900/10">
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <motion.h2 
-              className="text-3xl md:text-4xl font-bold mb-6"
-              initial="hidden"
-              whileInView="visible"
+          <div className="max-w-6xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              variants={fadeIn}
+              transition={{ duration: 0.8 }}
+              className="text-center mb-16"
             >
-              Our Collective Impact
-            </motion.h2>
-            <motion.p 
-              className="text-lg text-slate-600 dark:text-slate-300"
-              initial="hidden"
-              whileInView="visible"
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+                {language === 'ru' ? 'Влияние на здоровье: DALY и смертность' :
+                 language === 'en' ? 'Health Impact: DALY and Mortality' :
+                 'Денсаулыққа әсері: DALY және өлім'}
+              </h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+                {language === 'ru' ? 'Каждый микрограмм PM2.5, который мы улавливаем, спасает годы здоровой жизни' :
+                 language === 'en' ? 'Every microgram of PM2.5 we capture saves years of healthy life' :
+                 'Біз ұстайтын әрбір микрограмм PM2.5 салауатты өмірдің жылдарын сақтайды'}
+              </p>
+            </motion.div>
+
+            {/* DALY Statistics Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Heart className="h-8 w-8 text-red-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-red-600 dark:text-red-400 mb-2">37%</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'DALY' : language === 'en' ? 'DALY' : 'DALY'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'Ишемическая болезнь сердца' :
+                     language === 'en' ? 'Ischemic heart disease' :
+                     'Ишемиялық жүрек ауруы'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Brain className="h-8 w-8 text-purple-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">19%</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'DALY' : language === 'en' ? 'DALY' : 'DALY'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'Инсульт' :
+                     language === 'en' ? 'Stroke' :
+                     'Инсульт'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Activity className="h-8 w-8 text-blue-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">18%</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'DALY' : language === 'en' ? 'DALY' : 'DALY'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'ХОБЛ (хроническая обструктивная болезнь лёгких)' :
+                     language === 'en' ? 'COPD (chronic obstructive pulmonary disease)' :
+                     'ХОБЛ (созылмалы обструктивті өкпе ауруы)'}
+                  </p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-lg"
+              >
+                <div className="flex items-center justify-center mb-4">
+                  <Baby className="h-8 w-8 text-yellow-500" />
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-yellow-600 dark:text-yellow-400 mb-2">700K</div>
+                  <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                    {language === 'ru' ? 'детей в год' : language === 'en' ? 'children/year' : 'бала/жыл'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'Дети до 5 лет умирают от загрязнения воздуха' :
+                     language === 'en' ? 'Children under 5 die from air pollution' :
+                     '5 жасқа дейінгі балалар ауа ластануынан өледі'}
+                  </p>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Regional Health Impact */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              variants={fadeIn}
+              transition={{ duration: 0.8 }}
+              className="bg-white dark:bg-slate-800 rounded-xl p-8 shadow-lg mb-16"
             >
-              Through our air-to-ink technology, we've made a measurable difference to our environment.
-              Here's how our community is changing the world:
-            </motion.p>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-6 text-center">
+                {language === 'ru' ? 'Региональное воздействие на здоровье' :
+                 language === 'en' ? 'Regional Health Impact' :
+                 'Аймақтық денсаулыққа әсер'}
+              </h3>
+              
+              <div className="grid md:grid-cols-3 gap-6">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-red-600 dark:text-red-400 mb-2">2.3M</div>
+                  <div className="font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {language === 'ru' ? 'Восточная Азия' : language === 'en' ? 'East Asia' : 'Шығыс Азия'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'смертей от PM2.5 (2021)' :
+                     language === 'en' ? 'deaths from PM2.5 (2021)' :
+                     'PM2.5-тен өлім (2021)'}
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-2">2.1M</div>
+                  <div className="font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {language === 'ru' ? 'Южная Азия' : language === 'en' ? 'South Asia' : 'Оңтүстік Азия'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'смертей от PM2.5 (2021)' :
+                     language === 'en' ? 'deaths from PM2.5 (2021)' :
+                     'PM2.5-тен өлім (2021)'}
+                  </p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-2">16%</div>
+                  <div className="font-semibold text-slate-700 dark:text-slate-300 mb-1">
+                    {language === 'ru' ? 'Центральная Азия' : language === 'en' ? 'Central Asia' : 'Орталық Азия'}
+                  </div>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {language === 'ru' ? 'превышение среднемирового уровня' :
+                     language === 'en' ? 'above global average' :
+                     'әлемдік орташа деңгейден жоғары'}
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Age-specific Impact */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="grid md:grid-cols-2 gap-8"
+            >
+              <div className="bg-gradient-to-br from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20 rounded-xl p-6">
+                <Shield className="h-8 w-8 text-red-600 dark:text-red-400 mb-4" />
+                <h4 className="text-xl font-bold text-red-800 dark:text-red-300 mb-3">
+                  {language === 'ru' ? 'Дети (0-5 лет)' :
+                   language === 'en' ? 'Children (0-5 years)' :
+                   'Балалар (0-5 жас)'}
+                </h4>
+                <ul className="space-y-2 text-red-700 dark:text-red-300">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Пневмония и респираторные инфекции' :
+                       language === 'en' ? 'Pneumonia and respiratory infections' :
+                       'Пневмония және тыныс алу инфекциялары'}
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Замедленное развитие лёгких' :
+                       language === 'en' ? 'Stunted lung development' :
+                       'Өкпенің баяу дамуы'}
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Увеличенный риск астмы' :
+                       language === 'en' ? 'Increased asthma risk' :
+                       'Демікпе қаупінің артуы'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+              
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 rounded-xl p-6">
+                <Users className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-4" />
+                <h4 className="text-xl font-bold text-blue-800 dark:text-blue-300 mb-3">
+                  {language === 'ru' ? 'Пожилые (65+ лет)' :
+                   language === 'en' ? 'Elderly (65+ years)' :
+                   'Егде жастағылар (65+ жас)'}
+                </h4>
+                <ul className="space-y-2 text-blue-700 dark:text-blue-300">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Сердечно-сосудистые заболевания' :
+                       language === 'en' ? 'Cardiovascular disease' :
+                       'Жүрек-қан тамыр аурулары'}
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Инсульты и инфаркты' :
+                       language === 'en' ? 'Strokes and heart attacks' :
+                       'Инсульттар мен жүрек соғысы'}
+                    </span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span className="text-sm">
+                      {language === 'ru' ? 'Преждевременная смерть' :
+                       language === 'en' ? 'Premature death' :
+                       'Мерзімінен бұрын өлім'}
+                    </span>
+                  </li>
+                </ul>
+              </div>
+            </motion.div>
           </div>
-
-          <motion.div 
-            className="grid md:grid-cols-3 gap-8 md:gap-12"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <motion.div variants={fadeIn} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-              <div className="mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 dark:bg-emerald-900 rounded-full">
-                <Wind className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Air Purified</h3>
-              <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{pollutionSaved.toLocaleString()}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">cubic meters of pollution captured</p>
-            </motion.div>
-
-            <motion.div variants={fadeIn} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-              <div className="mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 dark:bg-emerald-900 rounded-full">
-                <Leaf className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Tree Equivalent</h3>
-              <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{treesEquivalent.toLocaleString()}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">equivalent trees planted</p>
-            </motion.div>
-
-            <motion.div variants={fadeIn} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 text-center transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-              <div className="mb-4 mx-auto w-16 h-16 flex items-center justify-center bg-emerald-100 dark:bg-emerald-900 rounded-full">
-                <Droplets className="h-8 w-8 text-emerald-600 dark:text-emerald-400" />
-              </div>
-              <h3 className="text-2xl font-bold mb-2">Water Saved</h3>
-              <p className="text-4xl font-bold text-emerald-600 dark:text-emerald-400 mb-2">{waterSaved.toLocaleString()}</p>
-              <p className="text-sm text-slate-500 dark:text-slate-400">liters compared to traditional ink</p>
-            </motion.div>
-          </motion.div>
         </div>
       </section>
 
-      {/* Interactive Impact Dashboard */}
-      <section className="py-16 bg-slate-100 dark:bg-slate-800">
+      {/* Collective impact section */}
+      <section className="py-20">
         <div className="container mx-auto px-4">
-          <motion.div 
-            className="max-w-3xl mx-auto text-center mb-12"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Impact Dashboard</h2>
-            <p className="text-lg text-slate-600 dark:text-slate-300">
-              Explore our environmental metrics and see how our community is making a difference.
-            </p>
-          </motion.div>
-
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeIn}
-          >
-            <Tabs defaultValue="global" className="max-w-5xl mx-auto">
-              <TabsList className="grid w-full grid-cols-3 mb-8">
-                <TabsTrigger value="global">Global Impact</TabsTrigger>
-                <TabsTrigger value="regional">Regional Breakdown</TabsTrigger>
-                <TabsTrigger value="personal">Personal Calculator</TabsTrigger>
-              </TabsList>
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.h2 
+              className="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-8"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              {language === 'ru' ? 'Коллективное воздействие' :
+               language === 'en' ? 'Collective Impact' :
+               'Ұжымдық әсер'}
+            </motion.h2>
+            
+            <div className="grid md:grid-cols-3 gap-8 mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="bg-gray-50 dark:bg-ink-blue/50 p-6 rounded-xl"
+              >
+                <Wind className="h-12 w-12 text-eco-leaf mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">2.4M</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {language === 'ru' ? 'литров воздуха очищено' :
+                   language === 'en' ? 'liters of air purified' :
+                   'литр ауа тазартылды'}
+                </p>
+              </motion.div>
               
-              <TabsContent value="global" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
-                <div className="grid md:grid-cols-2 gap-8">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Carbon Reduction Timeline</CardTitle>
-                      <CardDescription>Monthly pollution capture in kilograms</CardDescription>
-                    </CardHeader>
-                    <CardContent className="h-64 flex items-center justify-center">
-                      <div className="w-full h-full bg-slate-100 dark:bg-slate-800 rounded-lg p-4 flex items-center justify-center">
-                        <p className="text-slate-500 dark:text-slate-400">Chart visualization would go here</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="bg-gray-50 dark:bg-ink-blue/50 p-6 rounded-xl"
+              >
+                <Droplets className="h-12 w-12 text-eco-leaf mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">84K</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {language === 'ru' ? 'частиц PM2.5 захвачено' :
+                   language === 'en' ? 'PM2.5 particles captured' :
+                   'PM2.5 бөлшектері ұсталды'}
+                </p>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-gray-50 dark:bg-ink-blue/50 p-6 rounded-xl"
+              >
+                <Recycle className="h-12 w-12 text-eco-leaf mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">125</h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {language === 'ru' ? 'литров воды сэкономлено' :
+                   language === 'en' ? 'liters of water saved' :
+                   'литр су үнемделді'}
+                </p>
+              </motion.div>
+            </div>
 
+            {/* Interactive Impact Dashboard */}
+            <motion.div 
+              className="max-w-3xl mx-auto text-center mb-12"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeIn}
+            >
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Impact Dashboard</h2>
+              <p className="text-lg text-slate-600 dark:text-slate-300">
+                Explore our environmental metrics and see how our community is making a difference.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeIn}
+            >
+              <Tabs defaultValue="global" className="max-w-5xl mx-auto">
+                <TabsList className="grid w-full grid-cols-3 mb-8">
+                  <TabsTrigger value="global">Global Impact</TabsTrigger>
+                  <TabsTrigger value="regional">Regional Breakdown</TabsTrigger>
+                  <TabsTrigger value="personal">Personal Calculator</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="global" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Carbon Reduction Timeline</CardTitle>
+                        <CardDescription>Monthly pollution capture in kilograms</CardDescription>
+                      </CardHeader>
+                      <CardContent className="h-64 flex items-center justify-center">
+                        <div className="w-full h-full bg-slate-100 dark:bg-slate-800 rounded-lg p-4 flex items-center justify-center">
+                          <p className="text-slate-500 dark:text-slate-400">Chart visualization would go here</p>
+                        </div>
+                      </CardContent>
+                    </Card>
+
+                    <Card>
+                      <CardHeader>
+                        <CardTitle>Progress Toward Goals</CardTitle>
+                        <CardDescription>Annual targets and achievements</CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-6">
+                          <div>
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm font-medium">Air Purification Goal</span>
+                              <span className="text-sm font-medium">75%</span>
+                            </div>
+                            <Progress value={75} className="h-2" />
+                          </div>
+                          <div>
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm font-medium">Carbon Offset Target</span>
+                              <span className="text-sm font-medium">63%</span>
+                            </div>
+                            <Progress value={63} className="h-2" />
+                          </div>
+                          <div>
+                            <div className="flex justify-between mb-2">
+                              <span className="text-sm font-medium">Sustainable Production</span>
+                              <span className="text-sm font-medium">89%</span>
+                            </div>
+                            <Progress value={89} className="h-2" />
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  <div className="grid md:grid-cols-3 gap-6 mt-8">
+                    <div className="flex flex-col items-center">
+                      <h4 className="font-medium text-center mb-4">Total CO₂ Reduced</h4>
+                      <RadialProgress percentage={68} />
+                      <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
+                        68% of our 2024 target achieved
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <h4 className="font-medium text-center mb-4">Community Growth</h4>
+                      <RadialProgress percentage={82} />
+                      <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
+                        82% increase in active community members
+                      </p>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <h4 className="font-medium text-center mb-4">Water Conservation</h4>
+                      <RadialProgress percentage={91} />
+                      <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
+                        91% reduction in water usage vs. traditional methods
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="regional" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
+                  <div className="h-96 bg-slate-100 dark:bg-slate-800 rounded-lg mb-6 flex items-center justify-center">
+                    <p className="text-slate-500 dark:text-slate-400">Interactive map visualization would go here</p>
+                  </div>
+                  <div className="grid md:grid-cols-4 gap-4">
+                    <Card>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-base">Asia Pacific</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                        <p className="text-2xl font-bold">845 kg</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-base">Europe</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                        <p className="text-2xl font-bold">763 kg</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-base">North America</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                        <p className="text-2xl font-bold">592 kg</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardHeader className="p-4">
+                        <CardTitle className="text-base">Global South</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0">
+                        <p className="text-2xl font-bold">301 kg</p>
+                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                      </CardContent>
+                    </Card>
+                  </div>
+                </TabsContent>
+                
+                <TabsContent value="personal" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
                   <Card>
                     <CardHeader>
-                      <CardTitle>Progress Toward Goals</CardTitle>
-                      <CardDescription>Annual targets and achievements</CardDescription>
+                      <CardTitle>Calculate Your Personal Impact</CardTitle>
+                      <CardDescription>
+                        See how your purchases have contributed to a cleaner planet
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-6">
-                        <div>
-                          <div className="flex justify-between mb-2">
-                            <span className="text-sm font-medium">Air Purification Goal</span>
-                            <span className="text-sm font-medium">75%</span>
+                      <form className="space-y-4">
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Number of Products Purchased</label>
+                            <input
+                              type="number"
+                              className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
+                              placeholder="Enter number of products"
+                              min="1"
+                              defaultValue="1"
+                              onChange={(e) => {
+                                const val = parseInt(e.target.value);
+                                if (val > 0 && val <= 100) {
+                                  setCalculatorInputs(prev => ({ ...prev, quantity: val }));
+                                }
+                              }}
+                            />
                           </div>
-                          <Progress value={75} className="h-2" />
-                        </div>
-                        <div>
-                          <div className="flex justify-between mb-2">
-                            <span className="text-sm font-medium">Carbon Offset Target</span>
-                            <span className="text-sm font-medium">63%</span>
+                          <div className="space-y-2">
+                            <label className="text-sm font-medium">Product Type</label>
+                            <select 
+                              className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
+                              onChange={(e) => setCalculatorInputs(prev => ({ ...prev, productType: e.target.value }))}
+                            >
+                              <option value="ink">Ink Bottles</option>
+                              <option value="markers">Markers</option>
+                              <option value="pens">Pens</option>
+                              <option value="art-sets">Art Sets</option>
+                            </select>
                           </div>
-                          <Progress value={63} className="h-2" />
                         </div>
-                        <div>
-                          <div className="flex justify-between mb-2">
-                            <span className="text-sm font-medium">Sustainable Production</span>
-                            <span className="text-sm font-medium">89%</span>
-                          </div>
-                          <Progress value={89} className="h-2" />
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </div>
-
-                <div className="grid md:grid-cols-3 gap-6 mt-8">
-                  <div className="flex flex-col items-center">
-                    <h4 className="font-medium text-center mb-4">Total CO₂ Reduced</h4>
-                    <RadialProgress percentage={68} />
-                    <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
-                      68% of our 2024 target achieved
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <h4 className="font-medium text-center mb-4">Community Growth</h4>
-                    <RadialProgress percentage={82} />
-                    <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
-                      82% increase in active community members
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center">
-                    <h4 className="font-medium text-center mb-4">Water Conservation</h4>
-                    <RadialProgress percentage={91} />
-                    <p className="mt-4 text-sm text-center text-slate-500 dark:text-slate-400">
-                      91% reduction in water usage vs. traditional methods
-                    </p>
-                  </div>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="regional" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
-                <div className="h-96 bg-slate-100 dark:bg-slate-800 rounded-lg mb-6 flex items-center justify-center">
-                  <p className="text-slate-500 dark:text-slate-400">Interactive map visualization would go here</p>
-                </div>
-                <div className="grid md:grid-cols-4 gap-4">
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">Asia Pacific</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <p className="text-2xl font-bold">845 kg</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">Europe</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <p className="text-2xl font-bold">763 kg</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">North America</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <p className="text-2xl font-bold">592 kg</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
-                    </CardContent>
-                  </Card>
-                  <Card>
-                    <CardHeader className="p-4">
-                      <CardTitle className="text-base">Global South</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0">
-                      <p className="text-2xl font-bold">301 kg</p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
-                    </CardContent>
-                  </Card>
-                </div>
-              </TabsContent>
-              
-              <TabsContent value="personal" className="bg-white dark:bg-slate-900 rounded-xl p-6 shadow-lg">
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Calculate Your Personal Impact</CardTitle>
-                    <CardDescription>
-                      See how your purchases have contributed to a cleaner planet
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <form className="space-y-4">
-                      <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">Number of Products Purchased</label>
+                          <label className="text-sm font-medium">Usage Duration (months)</label>
                           <input
-                            type="number"
-                            className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
-                            placeholder="Enter number of products"
+                            type="range"
                             min="1"
-                            defaultValue="1"
-                            onChange={(e) => {
-                              const val = parseInt(e.target.value);
-                              if (val > 0 && val <= 100) {
-                                setCalculatorInputs(prev => ({ ...prev, quantity: val }));
-                              }
-                            }}
+                            max="24"
+                            defaultValue="6"
+                            className="w-full accent-eco-leaf"
+                            onChange={(e) => setCalculatorInputs(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
                           />
+                          <div className="flex justify-between text-xs text-slate-500">
+                            <span>1</span>
+                            <span>6</span>
+                            <span>12</span>
+                            <span>18</span>
+                            <span>24</span>
+                          </div>
                         </div>
                         <div className="space-y-2">
-                          <label className="text-sm font-medium">Product Type</label>
+                          <label className="text-sm font-medium">Your Region</label>
                           <select 
                             className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
-                            onChange={(e) => setCalculatorInputs(prev => ({ ...prev, productType: e.target.value }))}
+                            onChange={(e) => setCalculatorInputs(prev => ({ ...prev, region: e.target.value }))}
                           >
-                            <option value="ink">Ink Bottles</option>
-                            <option value="markers">Markers</option>
-                            <option value="pens">Pens</option>
-                            <option value="art-sets">Art Sets</option>
+                            <option value="asia">Asia Pacific</option>
+                            <option value="europe">Europe</option>
+                            <option value="namerica">North America</option>
+                            <option value="gsouth">Global South</option>
                           </select>
                         </div>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Usage Duration (months)</label>
-                        <input
-                          type="range"
-                          min="1"
-                          max="24"
-                          defaultValue="6"
-                          className="w-full accent-eco-leaf"
-                          onChange={(e) => setCalculatorInputs(prev => ({ ...prev, duration: parseInt(e.target.value) }))}
-                        />
-                        <div className="flex justify-between text-xs text-slate-500">
-                          <span>1</span>
-                          <span>6</span>
-                          <span>12</span>
-                          <span>18</span>
-                          <span>24</span>
-                        </div>
-                      </div>
-                      <div className="space-y-2">
-                        <label className="text-sm font-medium">Your Region</label>
-                        <select 
-                          className="w-full p-2 border rounded-md dark:bg-slate-800 dark:border-slate-700"
-                          onChange={(e) => setCalculatorInputs(prev => ({ ...prev, region: e.target.value }))}
+                      </form>
+                    </CardContent>
+                    <CardFooter className="flex justify-between">
+                      <Button variant="outline" onClick={() => resetCalculator()}>Reset</Button>
+                      <Button onClick={() => calculateImpact()}>Calculate Impact</Button>
+                    </CardFooter>
+                  </Card>
+                  
+                  {showResults && (
+                    <motion.div 
+                      className="mt-8 p-6 border rounded-lg bg-white dark:bg-slate-800 shadow-lg"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
+                      <h3 className="text-xl font-bold mb-6 text-center">Your Environmental Impact</h3>
+                      
+                      <div className="grid md:grid-cols-3 gap-6 mb-8">
+                        <motion.div 
+                          className="text-center"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          transition={{ delay: 0.2 }}
                         >
-                          <option value="asia">Asia Pacific</option>
-                          <option value="europe">Europe</option>
-                          <option value="namerica">North America</option>
-                          <option value="gsouth">Global South</option>
-                        </select>
-                      </div>
-                    </form>
-                  </CardContent>
-                  <CardFooter className="flex justify-between">
-                    <Button variant="outline" onClick={() => resetCalculator()}>Reset</Button>
-                    <Button onClick={() => calculateImpact()}>Calculate Impact</Button>
-                  </CardFooter>
-                </Card>
-                
-                {showResults && (
-                  <motion.div 
-                    className="mt-8 p-6 border rounded-lg bg-white dark:bg-slate-800 shadow-lg"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <h3 className="text-xl font-bold mb-6 text-center">Your Environmental Impact</h3>
-                    
-                    <div className="grid md:grid-cols-3 gap-6 mb-8">
-                      <motion.div 
-                        className="text-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                      >
-                        <div className="relative h-20 w-20 mx-auto mb-3">
-                          <BarChart3 className="h-12 w-12 mx-auto text-eco-leaf" />
-                          <motion.div 
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.6, type: "spring" }}
+                          <div className="relative h-20 w-20 mx-auto mb-3">
+                            <BarChart3 className="h-12 w-12 mx-auto text-eco-leaf" />
+                            <motion.div 
+                              className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.6, type: "spring" }}
+                            >
+                              +{impactData.pollutionRank}
+                            </motion.div>
+                          </div>
+                          <motion.p 
+                            className="text-3xl font-bold"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.3 }}
                           >
-                            +{impactData.pollutionRank}
-                          </motion.div>
-                        </div>
-                        <motion.p 
-                          className="text-3xl font-bold"
+                            {impactData.pollutionCaptured.toFixed(1)} kg
+                          </motion.p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
+                        </motion.div>
+                        
+                        <motion.div 
+                          className="text-center"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.3 }}
                         >
-                          {impactData.pollutionCaptured.toFixed(1)} kg
-                        </motion.p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Pollution captured</p>
-                      </motion.div>
-                      
-                      <motion.div 
-                        className="text-center"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.3 }}
-                      >
-                        <div className="relative h-20 w-20 mx-auto mb-3">
-                          <TrendingUp className="h-12 w-12 mx-auto text-eco-leaf" />
-                          <motion.div 
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.7, type: "spring" }}
+                          <div className="relative h-20 w-20 mx-auto mb-3">
+                            <TrendingUp className="h-12 w-12 mx-auto text-eco-leaf" />
+                            <motion.div 
+                              className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.7, type: "spring" }}
+                            >
+                              +{impactData.airRank}
+                            </motion.div>
+                          </div>
+                          <motion.p 
+                            className="text-3xl font-bold"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.4 }}
                           >
-                            +{impactData.airRank}
-                          </motion.div>
-                        </div>
-                        <motion.p 
-                          className="text-3xl font-bold"
+                            {impactData.airPurified.toFixed(1)} m³
+                          </motion.p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">Air purified</p>
+                        </motion.div>
+                        
+                        <motion.div 
+                          className="text-center"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ delay: 0.4 }}
                         >
-                          {impactData.airPurified.toFixed(1)} m³
-                        </motion.p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Air purified</p>
+                          <div className="relative h-20 w-20 mx-auto mb-3">
+                            <Users className="h-12 w-12 mx-auto text-eco-leaf" />
+                            <motion.div 
+                              className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
+                              initial={{ scale: 0 }}
+                              animate={{ scale: 1 }}
+                              transition={{ delay: 0.8, type: "spring" }}
+                            >
+                              🌟
+                            </motion.div>
+                          </div>
+                          <motion.p 
+                            className="text-3xl font-bold"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5 }}
+                          >
+                            Top {impactData.communityPercentile}%
+                          </motion.p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">Of community contributors</p>
+                        </motion.div>
+                      </div>
+                      
+                      <motion.div 
+                        className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6 }}
+                      >
+                        <h4 className="font-medium mb-4">Impact Breakdown</h4>
+                        <div className="space-y-4">
+                          <div>
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm">CO₂ Equivalent Saved</span>
+                              <span className="text-sm font-medium">{impactData.co2Equivalent.toFixed(2)} kg</span>
+                            </div>
+                            <Progress value={impactData.co2Percentage} className="h-2" />
+                          </div>
+                          <div>
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm">Water Conservation</span>
+                              <span className="text-sm font-medium">{impactData.waterSaved.toFixed(0)} L</span>
+                            </div>
+                            <Progress value={impactData.waterPercentage} className="h-2" />
+                          </div>
+                          <div>
+                            <div className="flex justify-between mb-1">
+                              <span className="text-sm">Traditional Ink Manufacturing Avoided</span>
+                              <span className="text-sm font-medium">{impactData.tradInkAvoided.toFixed(0)}%</span>
+                            </div>
+                            <Progress value={impactData.tradInkAvoided} className="h-2" />
+                          </div>
+                        </div>
                       </motion.div>
                       
                       <motion.div 
-                        className="text-center"
+                        className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border border-emerald-100 dark:border-emerald-800"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        transition={{ delay: 0.4 }}
+                        transition={{ delay: 0.8 }}
                       >
-                        <div className="relative h-20 w-20 mx-auto mb-3">
-                          <Users className="h-12 w-12 mx-auto text-eco-leaf" />
-                          <motion.div 
-                            className="absolute -top-1 -right-1 w-6 h-6 bg-amber-400 rounded-full flex items-center justify-center text-xs font-bold"
-                            initial={{ scale: 0 }}
-                            animate={{ scale: 1 }}
-                            transition={{ delay: 0.8, type: "spring" }}
-                          >
-                            🌟
-                          </motion.div>
+                        <div className="flex">
+                          <div className="mr-4 flex-shrink-0">
+                            <Leaf className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-emerald-800 dark:text-emerald-200">
+                              By using AuaLine products, you've helped remove air pollution equivalent to
+                              planting <span className="font-bold">{impactData.treesPlanted.toFixed(1)} trees</span> for a year!
+                              Thank you for being part of our mission for cleaner air.
+                            </p>
+                          </div>
                         </div>
-                        <motion.p 
-                          className="text-3xl font-bold"
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ delay: 0.5 }}
-                        >
-                          Top {impactData.communityPercentile}%
-                        </motion.p>
-                        <p className="text-sm text-slate-500 dark:text-slate-400">Of community contributors</p>
                       </motion.div>
-                    </div>
-                    
-                    <motion.div 
-                      className="bg-slate-50 dark:bg-slate-700 rounded-lg p-6"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6 }}
-                    >
-                      <h4 className="font-medium mb-4">Impact Breakdown</h4>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">CO₂ Equivalent Saved</span>
-                            <span className="text-sm font-medium">{impactData.co2Equivalent.toFixed(2)} kg</span>
-                          </div>
-                          <Progress value={impactData.co2Percentage} className="h-2" />
-                        </div>
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">Water Conservation</span>
-                            <span className="text-sm font-medium">{impactData.waterSaved.toFixed(0)} L</span>
-                          </div>
-                          <Progress value={impactData.waterPercentage} className="h-2" />
-                        </div>
-                        <div>
-                          <div className="flex justify-between mb-1">
-                            <span className="text-sm">Traditional Ink Manufacturing Avoided</span>
-                            <span className="text-sm font-medium">{impactData.tradInkAvoided.toFixed(0)}%</span>
-                          </div>
-                          <Progress value={impactData.tradInkAvoided} className="h-2" />
-                        </div>
+                      
+                      <div className="mt-6 flex justify-center">
+                        <Button variant="outline" size="sm" className="mr-2" onClick={() => resetCalculator()}>
+                          Recalculate
+                        </Button>
+                        <Button size="sm" onClick={() => window.print()}>
+                          Share Results
+                        </Button>
                       </div>
                     </motion.div>
-                    
-                    <motion.div 
-                      className="mt-6 p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-lg border border-emerald-100 dark:border-emerald-800"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.8 }}
-                    >
-                      <div className="flex">
-                        <div className="mr-4 flex-shrink-0">
-                          <Leaf className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
-                        </div>
-                        <div>
-                          <p className="text-sm text-emerald-800 dark:text-emerald-200">
-                            By using AuaLine products, you've helped remove air pollution equivalent to
-                            planting <span className="font-bold">{impactData.treesPlanted.toFixed(1)} trees</span> for a year!
-                            Thank you for being part of our mission for cleaner air.
-                          </p>
-                        </div>
-                      </div>
-                    </motion.div>
-                    
-                    <div className="mt-6 flex justify-center">
-                      <Button variant="outline" size="sm" className="mr-2" onClick={() => resetCalculator()}>
-                        Recalculate
-                      </Button>
-                      <Button size="sm" onClick={() => window.print()}>
-                        Share Results
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
-              </TabsContent>
-            </Tabs>
-          </motion.div>
+                  )}
+                </TabsContent>
+              </Tabs>
+            </motion.div>
+          </div>
         </div>
       </section>
 

@@ -4,26 +4,29 @@ import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { AlertTriangle, Globe, ArrowRight, Heart, Lungs } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const PollutionAlert = () => {
+  const { t } = useLanguage();
+  
   const stats = [
     {
       icon: <Globe className="h-8 w-8 text-red-500" />,
       value: "99%",
-      label: "населения мира",
-      description: "живет в условиях превышения нормы PM2.5"
+      label: t('pollution.stat1-label'),
+      description: t('pollution.stat1-desc')
     },
     {
       icon: <Heart className="h-8 w-8 text-orange-500" />,
       value: "79.9",
-      label: "µg/m³",
-      description: "максимальный уровень загрязнения (в 16 раз выше нормы)"
+      label: t('pollution.stat2-label'),
+      description: t('pollution.stat2-desc')
     },
     {
       icon: <Lungs className="h-8 w-8 text-blue-500" />,
       value: "700,000",
-      label: "детей",
-      description: "умирают ежегодно от загрязнения воздуха"
+      label: t('pollution.stat3-label'),
+      description: t('pollution.stat3-desc')
     }
   ];
 
@@ -40,11 +43,11 @@ const PollutionAlert = () => {
           <div className="flex items-center justify-center mb-4">
             <AlertTriangle className="h-12 w-12 text-red-500 mr-3" />
             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">
-              Кризис загрязнения воздуха
+              {t('pollution.title')}
             </h2>
           </div>
           <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-            Мелкодисперсные частицы PM2.5 представляют критическую угрозу для здоровья человека по всему миру
+            {t('pollution.subtitle')}
           </p>
         </motion.div>
 
@@ -84,16 +87,16 @@ const PollutionAlert = () => {
           className="bg-gradient-to-r from-red-500 to-orange-500 rounded-xl p-8 text-white text-center"
         >
           <h3 className="text-2xl font-bold mb-4">
-            Узнайте больше о глобальном загрязнении воздуха
+            {t('pollution.cta-title')}
           </h3>
           <p className="text-lg mb-6 opacity-90">
-            Изучите подробную статистику, региональные данные и влияние на здоровье человека
+            {t('pollution.cta-desc')}
           </p>
           <Link 
             href="/pollution-data"
             className="inline-flex items-center bg-white text-red-600 px-8 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors"
           >
-            Посмотреть полные данные
+            {t('pollution.cta-button')}
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
         </motion.div>
@@ -106,13 +109,13 @@ const PollutionAlert = () => {
           className="mt-8 text-center"
         >
           <p className="text-slate-600 dark:text-slate-400 mb-4">
-            <strong>AuaLine</strong> превращает загрязнение воздуха в экологически чистые чернила
+            <strong>AuaLine</strong> {t('pollution.solution-text')}
           </p>
           <Link 
             href="/shop"
             className="inline-flex items-center text-eco-leaf hover:text-eco-leaf/80 font-semibold transition-colors"
           >
-            Присоединяйтесь к решению
+            {t('pollution.solution-cta')}
             <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </motion.div>
