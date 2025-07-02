@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { AlertTriangle, Globe, ArrowRight, Heart, Lungs } from 'lucide-react';
+import { AlertTriangle, Globe, ArrowRight, Heart, Activity } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const PollutionAlert = () => {
@@ -23,7 +23,7 @@ const PollutionAlert = () => {
       description: t('pollution.stat2-desc')
     },
     {
-      icon: <Lungs className="h-8 w-8 text-blue-500" />,
+      icon: <Activity className="h-8 w-8 text-blue-500" />,
       value: "700,000",
       label: t('pollution.stat3-label'),
       description: t('pollution.stat3-desc')
