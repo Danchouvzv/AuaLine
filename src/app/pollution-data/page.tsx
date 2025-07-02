@@ -190,7 +190,7 @@ export default function PollutionDataPage() {
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
                 <h4 className="font-semibold text-blue-800 dark:text-blue-300 mb-2">Европа</h4>
                 <p className="text-sm text-blue-700 dark:text-blue-400">
-                  54% городов < 10 µg/m³; 36 из 43 стран улучшили показатели
+                  54% городов &lt; 10 µg/m³; 36 из 43 стран улучшили показатели
                 </p>
               </div>
               
@@ -210,7 +210,7 @@ export default function PollutionDataPage() {
             </div>
           </motion.div>
 
-          {/* Section 4: Impact of "Safe" Levels */}
+          {/* Section 4: Impact of Safe Levels */}
           <motion.div variants={itemVariants} className="bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8">
             <div className="flex items-center mb-6">
               <Heart className="h-8 w-8 text-red-500 mr-3" />
@@ -457,7 +457,7 @@ export default function PollutionDataPage() {
                 </div>
                 <ul className="space-y-3">
                   <li className="flex items-start">
-                    <div className="w-2 h-2 bg-brown-500 rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <div className="w-2 h-2 bg-amber-600 rounded-full mt-2 mr-3 flex-shrink-0"></div>
                     <span className="text-orange-700 dark:text-orange-300">Дрова</span>
                   </li>
                   <li className="flex items-start">

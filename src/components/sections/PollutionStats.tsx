@@ -10,13 +10,22 @@ interface PollutionStatsProps {
   className?: string;
 }
 
+interface StatItem {
+  icon: React.ReactElement;
+  value: string;
+  label: string;
+  color: string;
+  description?: string;
+  bgColor?: string;
+}
+
 const PollutionStats: React.FC<PollutionStatsProps> = ({ 
   variant = 'compact',
   className = ''
 }) => {
   const { t, language } = useLanguage();
 
-  const compactStats = [
+  const compactStats: StatItem[] = [
     {
       icon: <Users className="h-6 w-6" />,
       value: "99%",
@@ -43,7 +52,7 @@ const PollutionStats: React.FC<PollutionStatsProps> = ({
     }
   ];
 
-  const detailedStats = [
+  const detailedStats: StatItem[] = [
     {
       icon: <Users className="h-8 w-8" />,
       value: "99%",
@@ -130,7 +139,7 @@ const PollutionStats: React.FC<PollutionStatsProps> = ({
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
           viewport={{ once: true }}
-          className={`${stat.bgColor} rounded-xl p-6 text-center`}
+          className={`${stat.bgColor || 'bg-white dark:bg-slate-800'} rounded-xl p-6 text-center`}
         >
           <div className={`${stat.color} mb-4 flex justify-center`}>
             {stat.icon}
@@ -141,9 +150,11 @@ const PollutionStats: React.FC<PollutionStatsProps> = ({
           <div className="text-lg font-semibold text-slate-700 dark:text-slate-300 mb-2">
             {stat.label}
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            {stat.description}
-          </p>
+          {stat.description && (
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              {stat.description}
+            </p>
+          )}
         </motion.div>
       ))}
     </div>
