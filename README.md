@@ -443,20 +443,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support & Contact
 
-- **Email**: [support@aualine.com](mailto:support@aualine.com)
-- **Twitter**: [@AuaLine](https://twitter.com/AuaLine)
-- **Discord**: [Join our community](https://discord.gg/aualine)
+- **Email**: [talgatovdaniyal@gmail.com](mailto:talgatovdaniyal@gmail.com)
+
 
 ---
 
-## 🙏 Acknowledgments
 
-- [Next.js Team](https://nextjs.org) for the incredible framework
-- [Vercel](https://vercel.com) for deployment infrastructure
-- [Firebase](https://firebase.google.com) for backend services
-- [Tailwind CSS](https://tailwindcss.com) for styling utilities
-- [shadcn/ui](https://ui.shadcn.com/) for beautiful UI components
-- All our early adopters and supporters
 
 ---
 
